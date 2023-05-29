@@ -1,0 +1,49 @@
+@options
+@packages
+-classpath
+'C:/Users/lopes/.m2/repository/com/mysql/mysql-connector-j/8.0.33/mysql-connector-j-8.0.33.jar;C:/Users/lopes/.m2/repository/com/google/protobuf/protobuf-java/3.21.9/protobuf-java-3.21.9.jar'
+-encoding
+'UTF-8'
+-protected
+-source
+'18'
+-sourcepath
+'C:/Users/lopes/Documents/NetBeansProjects/AdmCaixa/src/main/java'
+-author
+-bottom
+'Copyright &#169; 2023. All rights reserved.'
+-charset
+'UTF-8'
+-d
+'C:/Users/lopes/Documents/NetBeansProjects/AdmCaixa/target/apidocs'
+-docencoding
+'UTF-8'
+-doctitle
+'AdmCaixa 1.0-SNAPSHOT API'
+-use
+-version
+-windowtitle
+'AdmCaixa 1.0-SNAPSHOT API'
+com.mycompany.admcaixa
+entities
+C:\Users\lopes\.m2\repository\com\mysql\mysql-connector-j\8.0.33\mysql-connector-j-8.0.33.jar = 1683591377529
+C:\Users\lopes\.m2\repository\com\google\protobuf\protobuf-java\3.21.9\protobuf-java-3.21.9.jar = 1683591377134
+C:\Users\lopes\Documents\NetBeansProjects\AdmCaixa\src\main\java = 1683653522038
+C:\Users\lopes\Documents\NetBeansProjects\AdmCaixa\target\apidocs\allclasses-index.html = 1685372469849
+C:\Users\lopes\Documents\NetBeansProjects\AdmCaixa\target\apidocs\allpackages-index.html = 1685372469853
+C:\Users\lopes\Documents\NetBeansProjects\AdmCaixa\target\apidocs\copy.svg = 1685372469894
+C:\Users\lopes\Documents\NetBeansProjects\AdmCaixa\target\apidocs\element-list = 1685372469747
+C:\Users\lopes\Documents\NetBeansProjects\AdmCaixa\target\apidocs\help-doc.html = 1685372469887
+C:\Users\lopes\Documents\NetBeansProjects\AdmCaixa\target\apidocs\index-all.html = 1685372469878
+C:\Users\lopes\Documents\NetBeansProjects\AdmCaixa\target\apidocs\index.html = 1685372469830
+C:\Users\lopes\Documents\NetBeansProjects\AdmCaixa\target\apidocs\jquery-ui.overrides.css = 1685372469931
+C:\Users\lopes\Documents\NetBeansProjects\AdmCaixa\target\apidocs\member-search-index.js = 1685372469860
+C:\Users\lopes\Documents\NetBeansProjects\AdmCaixa\target\apidocs\module-search-index.js = 1685372469856
+C:\Users\lopes\Documents\NetBeansProjects\AdmCaixa\target\apidocs\overview-summary.html = 1685372469882
+C:\Users\lopes\Documents\NetBeansProjects\AdmCaixa\target\apidocs\overview-tree.html = 1685372469823
+C:\Users\lopes\Documents\NetBeansProjects\AdmCaixa\target\apidocs\package-search-index.js = 1685372469857
+C:\Users\lopes\Documents\NetBeansProjects\AdmCaixa\target\apidocs\script.js = 1685372469892
+C:\Users\lopes\Documents\NetBeansProjects\AdmCaixa\target\apidocs\search.js = 1685372469897
+C:\Users\lopes\Documents\NetBeansProjects\AdmCaixa\target\apidocs\stylesheet.css = 1685372469890
+C:\Users\lopes\Documents\NetBeansProjects\AdmCaixa\target\apidocs\tag-search-index.js = 1685372469862
+C:\Users\lopes\Documents\NetBeansProjects\AdmCaixa\target\apidocs\type-search-index.js = 1685372469859

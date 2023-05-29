@@ -1,0 +1,4 @@
+entities\Item.class
+com\mycompany\admcaixa\AdmCaixa.class
+entities\ProdutoInt.class
+entities\ProdutoFrac.class

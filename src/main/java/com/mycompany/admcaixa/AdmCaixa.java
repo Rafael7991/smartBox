@@ -6,7 +6,7 @@ import java.sql.*;
 //import java.time.format.DateTimeFormatter;
 import entities.*;
 import java.util.Date;
-import java.sql.Timestamp;
+//import java.sql.Timestamp;
 
 public class AdmCaixa {
 
@@ -22,12 +22,26 @@ public class AdmCaixa {
             float preco = 0;
             int id = 0;
 
-            Class.forName("com.mysql.cj.jdbc.Driver");
-            Connection conexao = DriverManager.getConnection("jdbc:mysql://localhost:3306/admcaixa", "root", "");
-           
+            String url = "jdbc:h2:~/smartbox"; // URL de conexão do H2
+            String user = "sa"; // Nome de usuário do banco de dados
+            String password = ""; // Senha do banco de dados (se aplicável)
+            
+            Connection conexao = DriverManager.getConnection(url, user, password);
+            
+            
+            
             Venda venda = new Venda(new Timestamp(new Date().getTime()));
 
             while (true) {
+                String sql1 = "SELECT * FROM users";
+                PreparedStatement ps = conexao.prepareStatement(sql1);
+                ResultSet rs = ps.executeQuery();
+                while (rs.next()) {
+
+                   
+                    System.out.println("ID: " + rs.getInt("id") + ", Nome: " + rs.getString("nome"));
+
+                }
                 System.out.println("Digite o codigo: ");
                 cod = sc.next();
                 if (cod.equals("9999")) {
@@ -35,11 +49,11 @@ public class AdmCaixa {
                 }
                 String sql = "SELECT * FROM produtos where id = ?";
 
-                PreparedStatement ps = conexao.prepareStatement(sql);
+                //PreparedStatement ps = conexao.prepareStatement(sql);
 
-                ps.setString(1, cod);
+                //ps.setString(1, cod);
 
-                ResultSet rs = ps.executeQuery();
+                //ResultSet rs = ps.executeQuery();
 
                 while (rs.next()) {
 
@@ -101,7 +115,7 @@ public class AdmCaixa {
                         float entrada = sc.nextFloat();
                         PagaDinheiro pagamentoCash = new PagaDinheiro(entrada, venda.getTotal());
                         
-                        System.out.println("Troco:" + pagamentoCash.calculaTroco());
+                        System.out.println("Troco: R$" + pagamentoCash.calculaTroco());
                         break;
                     case 1:
                         PagaCartao pagamentoCard = new PagaCartao(venda.getTotal());
@@ -109,9 +123,7 @@ public class AdmCaixa {
                         break;
                 }
             
-        } catch (ClassNotFoundException e) {
-            System.out.println("Driver não Localizado");
-        } catch (SQLException e) {
+        }  catch (SQLException e) {
              e.printStackTrace();
         }
     }

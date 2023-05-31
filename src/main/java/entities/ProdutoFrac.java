@@ -31,9 +31,4 @@ public class ProdutoFrac extends Item{
         return qtd;
     }
 
-    public float getPreco() {
-        return preco;
-    }
-    
-    
 }

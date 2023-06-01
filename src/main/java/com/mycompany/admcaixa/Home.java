@@ -1,24 +1,35 @@
 package com.mycompany.admcaixa;
 
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import javax.swing.JOptionPane;
+
 public class Home extends javax.swing.JFrame {
-    
+
+    private final Connection conexao;
     private Func func;
     private Admin admin;
-    
-    public Home(Func usuario) {
-        
+
+    public Home(Func usuario, Connection conexao) {
+
         initComponents();
+        this.conexao = conexao;
         func = usuario;
-       
+
     }
-    
-    public Home(Admin usuario) {
+
+    public Home(Admin usuario, Connection conexao) {
         initComponents();
-        this.admin = usuario;
+        this.conexao = conexao;
+
+        admin = usuario;
+
     }
-    
-    public Home(){
-       initComponents(); 
+
+    public Home(Connection conexao) {
+        initComponents();
+        this.conexao = conexao;
     }
 
     @SuppressWarnings("unchecked")
@@ -35,6 +46,10 @@ public class Home extends javax.swing.JFrame {
         bgHome.setBackground(new java.awt.Color(51, 51, 51));
 
         jButton1.setText("Gerenciamento de Caixa");
+        jButton1.setAlignmentY(0.0F);
+        jButton1.setPreferredSize(new java.awt.Dimension(160, 25));
+        jButton1.setVerticalAlignment(javax.swing.SwingConstants.BOTTOM);
+        jButton1.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton1ActionPerformed(evt);
@@ -42,6 +57,7 @@ public class Home extends javax.swing.JFrame {
         });
 
         jButton2.setText("Cadastrar Produto");
+        jButton2.setVerticalAlignment(javax.swing.SwingConstants.BOTTOM);
         jButton2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton2ActionPerformed(evt);
@@ -49,6 +65,7 @@ public class Home extends javax.swing.JFrame {
         });
 
         jButton3.setText("Cadastrar Usuário");
+        jButton3.setVerticalAlignment(javax.swing.SwingConstants.BOTTOM);
         jButton3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton3ActionPerformed(evt);
@@ -61,22 +78,23 @@ public class Home extends javax.swing.JFrame {
             bgHomeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(bgHomeLayout.createSequentialGroup()
                 .addGap(137, 137, 137)
-                .addComponent(jButton1)
-                .addGap(66, 66, 66)
-                .addComponent(jButton2)
-                .addGap(75, 75, 75)
-                .addComponent(jButton3)
-                .addContainerGap(115, Short.MAX_VALUE))
+                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(47, 47, 47)
+                .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(46, 46, 46)
+                .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(90, Short.MAX_VALUE))
         );
         bgHomeLayout.setVerticalGroup(
             bgHomeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(bgHomeLayout.createSequentialGroup()
-                .addGap(159, 159, 159)
-                .addGroup(bgHomeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton1)
-                    .addComponent(jButton2)
-                    .addComponent(jButton3))
-                .addContainerGap(318, Short.MAX_VALUE))
+                .addGap(159, 160, Short.MAX_VALUE)
+                .addGroup(bgHomeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 255, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(bgHomeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jButton3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 255, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(121, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -98,35 +116,43 @@ public class Home extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        // Cadastrar Produto
-        CadastraProd cad = new CadastraProd();
-        cad.show();
-        dispose();
-        if(admin == null){
-           // func.cadastraObjeto();
+        //Cadastrar Produto
+        if (admin == null) {
+           JOptionPane.showMessageDialog(null, "Sem Privilegios!");
         } else {
-           // admin.cadastraObjeto();
+            CadastraProd cad = new CadastraProd(conexao);
+            cad.show();
+            dispose();
+            
         }
-        
+
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         // Cadastrar Usuario
-        CadastraUser cad = new CadastraUser();
-        cad.show();
-        dispose();
         
+        if(admin == null){
+            CadastraUser cad = new CadastraUser(1);
+            cad.show();
+        } else {
+            CadastraUser cad = new CadastraUser(0);
+            cad.show();
+        }
+        dispose();
+
     }//GEN-LAST:event_jButton3ActionPerformed
 
     public static void main(String args[]) {
-
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new Home().setVisible(true);
-                
-                
-            }
-        });
+        String url = "jdbc:h2:~/smartbox";
+        try (Connection conexao = DriverManager.getConnection(url, "sa", "")) {
+            java.awt.EventQueue.invokeLater(new Runnable() {
+                public void run() {
+                    new Home(conexao).setVisible(true);
+                }
+            });
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

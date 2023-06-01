@@ -143,12 +143,12 @@ public class Login extends javax.swing.JFrame {
                         if (rs.getInt("PRIV") == 1) {
                             Func usuario = new Func(rs.getString("LOGIN"), rs.getString("SENHA"), rs.getString("NOME"), rs.getString("SOBRENOME"));
                             System.out.println("Ben vindo funcionario");
-                            Home home = new Home(usuario);
+                            Home home = new Home(usuario, conexao);
                             home.show();
                         } else if (rs.getInt("PRIV") == 0) {
                             Admin usuario = new Admin(rs.getString("LOGIN"), rs.getString("SENHA"), rs.getString("NOME"), rs.getString("SOBRENOME"));
                             System.out.println("Ben vindo Administrador");
-                            Home home = new Home(usuario);
+                            Home home = new Home(usuario, conexao);
                             home.show();
                         }
                         dispose();

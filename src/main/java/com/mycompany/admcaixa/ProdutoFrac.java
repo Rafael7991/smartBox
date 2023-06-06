@@ -1,13 +1,14 @@
-package entities;
+package com.mycompany.admcaixa;
 
 public class ProdutoFrac extends Item{
     
-    public float preco;
+    private float preco;
+    private int qtd;
     
     public ProdutoFrac(int cod, String nome, float preco){
         this.preco = preco;
         tipo = 1;
-        qtd = 1;
+        this.qtd = 0;
     }
     
     @Override

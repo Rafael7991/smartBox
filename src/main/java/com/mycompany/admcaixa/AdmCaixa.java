@@ -49,11 +49,11 @@ public class AdmCaixa {
                 }
                 String sql = "SELECT * FROM produtos where id = ?";
 
-                //PreparedStatement ps = conexao.prepareStatement(sql);
+                PreparedStatement ps = conexao.prepareStatement(sql);
 
-                //ps.setString(1, cod);
+                ps.setString(1, cod);
 
-                //ResultSet rs = ps.executeQuery();
+                ResultSet rs = ps.executeQuery();
 
                 while (rs.next()) {
 
@@ -88,6 +88,11 @@ public class AdmCaixa {
                 ps = conexao.prepareStatement(sql);               
                 ps.setTimestamp(1, venda.getDataHoraAtual());
                 ps.setInt(2, id);
+                
+                
+                
+                
+                
                 if (tipo == 1) {
                     ps.setFloat(4, preco);
                     ps.setInt(3, 0);

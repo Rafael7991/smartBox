@@ -1,4 +1,4 @@
-package entities;
+package com.mycompany.admcaixa;
 
 public abstract class Item {
     protected String nome;

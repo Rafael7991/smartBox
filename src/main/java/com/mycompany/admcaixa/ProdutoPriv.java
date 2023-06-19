@@ -1,16 +1,15 @@
+
 package com.mycompany.admcaixa;
 
-public class ProdutoFrac extends Item{
+public class ProdutoPriv extends Item{
     
-    public ProdutoFrac(int cod, String nome, float preco){
-        this.preco = preco;
-        tipo = 0;
-        this.qtd = 0;
+    ProdutoPriv(int cod, String nome){
+        
+        tipo = 2;
     }
     
-    @Override
     public float valorTotal(){
-        return preco;
+        return preco*estoque;
     }
 
     public String getNome() {
@@ -27,6 +26,14 @@ public class ProdutoFrac extends Item{
 
     public int getQtd() {
         return qtd;
+    }
+
+    public float getPreco() {
+        return preco;
+    }
+
+    public int getEstoque() {
+        return estoque;
     }
 
 }

@@ -12,7 +12,6 @@ public class Home extends javax.swing.JFrame {
     private Admin admin;
 
     public Home(Func usuario, Connection conexao) {
-
         initComponents();
         this.conexao = conexao;
         func = usuario;
@@ -22,9 +21,7 @@ public class Home extends javax.swing.JFrame {
     public Home(Admin usuario, Connection conexao) {
         initComponents();
         this.conexao = conexao;
-
         admin = usuario;
-
     }
 
     public Home(Connection conexao) {
@@ -40,6 +37,7 @@ public class Home extends javax.swing.JFrame {
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
+        jButton4 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -72,29 +70,38 @@ public class Home extends javax.swing.JFrame {
             }
         });
 
+        jButton4.setText("Novo Banco de Dados");
+        jButton4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton4ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout bgHomeLayout = new javax.swing.GroupLayout(bgHome);
         bgHome.setLayout(bgHomeLayout);
         bgHomeLayout.setHorizontalGroup(
             bgHomeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(bgHomeLayout.createSequentialGroup()
                 .addGap(137, 137, 137)
-                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(47, 47, 47)
-                .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(46, 46, 46)
-                .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(90, Short.MAX_VALUE))
+                .addGroup(bgHomeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jButton3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, 313, Short.MAX_VALUE)
+                    .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jButton4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(378, Short.MAX_VALUE))
         );
         bgHomeLayout.setVerticalGroup(
             bgHomeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(bgHomeLayout.createSequentialGroup()
                 .addGap(159, 160, Short.MAX_VALUE)
-                .addGroup(bgHomeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 255, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(bgHomeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(jButton3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 255, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(121, Short.MAX_VALUE))
+                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(jButton2)
+                .addGap(18, 18, 18)
+                .addComponent(jButton3)
+                .addGap(18, 18, 18)
+                .addComponent(jButton4)
+                .addContainerGap(228, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -115,7 +122,7 @@ public class Home extends javax.swing.JFrame {
         // Gerenciamento de caixa
         Caixa caixa = new Caixa(conexao);
         caixa.show();
-        dispose();
+        
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
@@ -125,7 +132,7 @@ public class Home extends javax.swing.JFrame {
         } else {
             CadastraProd cad = new CadastraProd(conexao);
             cad.show();
-            dispose();
+            
             
         }
 
@@ -133,17 +140,22 @@ public class Home extends javax.swing.JFrame {
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         // Cadastrar Usuario
-        
         if(admin == null){
-            CadastraUser cad = new CadastraUser(1);
+            CadastraUser cad = new CadastraUser(1, func );
             cad.show();
         } else {
-            CadastraUser cad = new CadastraUser(0);
+            CadastraUser cad = new CadastraUser(0, admin );
             cad.show();
         }
-        dispose();
+        
 
     }//GEN-LAST:event_jButton3ActionPerformed
+
+    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+        // CRIAR NOVO BANCO DE DADOS
+        NovoDB ndb = new NovoDB();
+        ndb.show();
+    }//GEN-LAST:event_jButton4ActionPerformed
 
     public static void main(String args[]) {
         String url = "jdbc:h2:~/smartbox";
@@ -163,5 +175,6 @@ public class Home extends javax.swing.JFrame {
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
+    private javax.swing.JButton jButton4;
     // End of variables declaration//GEN-END:variables
 }

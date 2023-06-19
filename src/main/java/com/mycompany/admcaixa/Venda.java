@@ -4,7 +4,7 @@ import java.sql.Timestamp;
 
 import java.util.Date;
 
-public class Venda{
+public class Venda {
 
     public int qtdItens = 0;
     public int qtdLinhas = 0;
@@ -12,16 +12,16 @@ public class Venda{
     public float totalParcial = 0;
     public Date dataHoraAtual;
 
-
     public Venda(Timestamp dataHoraAtual) {
         this.dataHoraAtual = dataHoraAtual;
-    }
 
+    }
 
     public void addItem(float valor, int qtd) {
         this.totalParcial += valor;
         this.qtdItens += qtd;
         this.qtdLinhas++;
+
     }
 
     public int getQtdItens() {

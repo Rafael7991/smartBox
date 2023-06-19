@@ -6,6 +6,7 @@ public abstract class Item {
     protected int tipo;
     protected int qtd;
     protected float preco;
+    protected int estoque;
     
     public abstract float valorTotal();
 

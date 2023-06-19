@@ -1,7 +1,7 @@
 package com.mycompany.admcaixa;
 
-import java.awt.*;
 import java.sql.*;
+import java.text.DecimalFormat;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.*;
@@ -12,17 +12,26 @@ public class popup extends javax.swing.JFrame {
     private int tipo;
     private int countEnter = 0;
     private int id;
-    private Venda venda;
+    private String cod;
+    private static Venda venda;
     private String nome;
     private Float preco;
     private PreparedStatement ps;
+    private PreparedStatement ps2;
     private int linhasAfetadas = 0;
     private ProdutoFrac PFrac;
     private ProdutoInt PInt;
+    private Float entrada;
+    private Float saida;
+    private int qtd;
+    private int estoque;
+    private int novoEstoque;
+    private DecimalFormat formato;
 
-    public popup(Connection conexao) {
+    public popup(Connection conexao, Venda venda) {
         this.conexao = conexao;
         this.venda = new Venda(new Timestamp(new java.util.Date().getTime()));
+        formato = new DecimalFormat("#,##0.00");
         initComponents();
     }
 
@@ -38,8 +47,10 @@ public class popup extends javax.swing.JFrame {
         jTextArea2 = new javax.swing.JTextArea();
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
+        jButton3 = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setType(java.awt.Window.Type.POPUP);
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowOpened(java.awt.event.WindowEvent evt) {
                 formWindowOpened(evt);
@@ -77,49 +88,60 @@ public class popup extends javax.swing.JFrame {
             }
         });
 
+        jButton3.setBackground(new java.awt.Color(0, 0, 204));
+        jButton3.setForeground(new java.awt.Color(255, 255, 255));
+        jButton3.setText(">>>>>");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(15, 15, 15)
-                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 82, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                         .addGap(6, 6, 6)
                         .addComponent(jLabel2))
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jButton2))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 46, Short.MAX_VALUE)
-                        .addComponent(jButton1)))
+                        .addComponent(jButton1))
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 225, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jButton2, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jButton3, javax.swing.GroupLayout.Alignment.TRAILING))))
                 .addGap(42, 42, 42))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(19, 19, 19)
-                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
+                        .addGap(19, 19, 19)
+                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(37, 37, 37)
-                        .addComponent(jButton2)))
+                        .addGap(99, 99, 99)
+                        .addComponent(jButton2)
+                        .addGap(1, 1, 1)
+                        .addComponent(jButton3)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jLabel2)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap(10, Short.MAX_VALUE))
+                        .addContainerGap(12, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -134,50 +156,45 @@ public class popup extends javax.swing.JFrame {
         if (jTextArea1.getText().isEmpty()) {
             JOptionPane.showMessageDialog(null, "Preencher com preço ou Quantidade");
         } else {
-
             switch (tipo) {
                 case 0:
-                    PFrac = new ProdutoFrac(id, nome, preco);
+                    PFrac = new ProdutoFrac(id, nome, Float.parseFloat(jTextArea2.getText()));
                     venda.addItem(PFrac.valorTotal(), 1);
                     break;
                 case 1:
                     PInt = new ProdutoInt(id, nome, Integer.parseInt(jTextArea2.getText()), preco);
                     venda.addItem(PInt.valorTotal(), Integer.parseInt(jTextArea2.getText()));
+                    qtd = Integer.parseInt(jTextArea2.getText());
                     break;
-
             }
-
             venda.setTotal(venda.getTotalParcial());
-
+            
             try {
-
-                ps = conexao.prepareStatement("INSERT INTO vendas (dataHora, idprodutos, quantidade, total) VALUES (?, ?, ?, ?)");
-
+                ps = conexao.prepareStatement("INSERT INTO vendas (dataHora, idprodutos, quantidade, total, nome) VALUES (?, ?, ?, ?, ?)");
                 ps.setTimestamp(1, venda.getDataHoraAtual());
-
+                ps.setString(5, nome);
                 ps.setInt(2, id);
+                novoEstoque = estoque - qtd;
+                cod = jTextArea1.getText();
+                System.out.println("novo estoque " + novoEstoque);
                 if (tipo == 0) {
                     ps.setInt(3, PFrac.getQtd());
                     ps.setFloat(4, PFrac.valorTotal());
-
                 } else if (tipo == 1) {
-
+                    ps2 = conexao.prepareStatement("UPDATE produtos SET estoque = ? WHERE cod = ?");
+                    ps2.setInt(1, novoEstoque);
+                    System.out.println("ID: " + id + "pint get estoque: " + PInt.getEstoque() + "pint getqtd: " + PInt.getQtd());
+                    ps2.setString(2, cod);
                     ps.setInt(3, PInt.getQtd());
                     ps.setFloat(4, PInt.valorTotal());
-
                 }
-                linhasAfetadas = ps.executeUpdate();
-
-                if (linhasAfetadas > 0) {
-                    System.out.println("Inserção realizada com sucesso.");
-                } else {
-                    System.out.println("Não foi possível realizar a inserção.");
-                }
+                ps.executeUpdate();
+                ps2.executeUpdate();
+                Caixa.jLabel2.setText("R$" + formato.format(venda.getTotalParcial()));
 
             } catch (SQLException ex) {
                 Logger.getLogger(popup.class.getName()).log(Level.SEVERE, null, ex);
             }
-
             jButton2.setVisible(true);
             jButton2.setEnabled(true);
             jButton1.setVisible(false);
@@ -191,45 +208,71 @@ public class popup extends javax.swing.JFrame {
 
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
         // Popup foi aberto
+
+        //String numeroFormatado = formato.format(numero);
         jButton1.setVisible(false);
         jButton1.setEnabled(false);
+        jButton3.setEnabled(false);
+        jButton3.setVisible(false);
     }//GEN-LAST:event_formWindowOpened
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // Botão do código acionado
         if (jTextArea1.getText().isEmpty()) {
             JOptionPane.showMessageDialog(null, "Preencher com codigo do Produto");
-        } else if (jTextArea1.getText().equals("999")) {
-
-            dispose();
+        } else if (jTextArea1.getText().equals("9")) {
+            jLabel1.setText("Valor pago:");
+            jTextArea1.setText("");
+            jTextArea2.setEnabled(false);
+            jTextArea2.setVisible(false);
+            jButton3.setEnabled(true);
+            jButton3.setVisible(true);
+            jButton2.setEnabled(false);
+            jButton2.setVisible(false);
+            //dispose();
         } else {
             jButton2.setVisible(false);
             jButton2.setEnabled(false);
             jButton1.setVisible(true);
             jButton1.setEnabled(true);
             jTextArea2.requestFocus();
-            String cod = jTextArea1.getText();
+            cod = jTextArea1.getText();
 
             try {
-                ps = conexao.prepareStatement("SELECT * FROM produtos where id = ?");
+                ps = conexao.prepareStatement("SELECT * FROM produtos where cod = ?");
                 ps.setString(1, cod);
 
                 ResultSet rs = ps.executeQuery();
-
                 while (rs.next()) {
-
                     tipo = rs.getInt("tipo");
-                    int estoque = rs.getInt("estoque");
+                    estoque = rs.getInt("estoque");
                     nome = rs.getString("nome");
-                    id = Integer.parseInt(cod);
+                    id = rs.getInt("id");
                     preco = rs.getFloat("preco");
                     System.out.println("ID: " + cod + ", Nome: " + nome + " Estoque " + estoque);
 
                 }
-                if (tipo == 0) {
-                    jLabel2.setText("Preço: ");
+
+                if (nome != null) {
+                    if (tipo == 0) {
+                        jLabel2.setText("Preço: ");
+                        Caixa.jLabel1.setText(nome);
+                    } else if (tipo == 1) {
+                        jLabel2.setText("Quantidade");
+                        Caixa.jLabel1.setText(nome + "  R$" + formato.format(preco));
+
+                    }
+                    /*else {
+
+                    }*/
                 } else {
-                    jLabel2.setText("Quantidade");
+                    JOptionPane.showMessageDialog(null, "Código invalido");
+                    jButton2.setVisible(true);
+                    jButton2.setEnabled(true);
+                    jButton1.setVisible(false);
+                    jButton1.setEnabled(false);
+                    jTextArea1.setText("");
+                    jTextArea1.requestFocus();
                 }
 
             } catch (SQLException ex) {
@@ -239,6 +282,18 @@ public class popup extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_jButton2ActionPerformed
 
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        // TODO add your handling code here:
+        if (jTextArea1.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Entre com o Valor que o cliente pagou");
+        } else {
+            entrada = Float.parseFloat(jTextArea1.getText());
+            saida = entrada - venda.getTotal();
+            Caixa.jLabel3.setText("Troco: R$" + formato.format(saida));
+            dispose();
+        }
+    }//GEN-LAST:event_jButton3ActionPerformed
+
     public static void main(String args[]) {
 
         String url = "jdbc:h2:~/smartbox";
@@ -246,7 +301,7 @@ public class popup extends javax.swing.JFrame {
             java.awt.EventQueue.invokeLater(new Runnable() {
 
                 public void run() {
-                    new popup(conexao).setVisible(true);
+                    new popup(conexao, venda).setVisible(true);
 
                 }
             });
@@ -256,8 +311,9 @@ public class popup extends javax.swing.JFrame {
     }
 //JOptionPane.showMessageDialog(null, "Preencher com codigo do Produto");
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
+    public javax.swing.JButton jButton1;
+    public javax.swing.JButton jButton2;
+    private javax.swing.JButton jButton3;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JScrollPane jScrollPane1;

@@ -2,17 +2,12 @@ package com.mycompany.admcaixa;
 
 public class ProdutoInt extends Item {
 
-    private int qtd;
-    private float preco;
-    private String nome;
-    private int cod;
-
     public ProdutoInt(int cod, String nome, int qtd, float preco) {
         this.qtd = qtd;
         this.preco = preco;
         this.cod = cod;
         this.nome = nome;
-        tipo = 2;
+        tipo = 1;
     }
 
     public String getNome() {
@@ -35,5 +30,15 @@ public class ProdutoInt extends Item {
     public float getPreco() {
         return preco;
     }
+
+    public int getEstoque() {
+        return estoque;
+    }
+
+    public void setEstoque(int estoque) {
+        this.estoque = estoque;
+    }
+    
+    
 
 }

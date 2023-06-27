@@ -1,18 +1,33 @@
-
 package com.mycompany.admcaixa;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.text.DecimalFormat;
 
 public class CadastraProd extends javax.swing.JFrame {
-    
-    private final Connection conexao;
-    
-    public CadastraProd(Connection conexao) {
+
+    private Connection conexao;
+    private static String DB;
+    private Func func;
+    private Admin admin;
+    private int priv;
+
+    public CadastraProd(Connection conexao, Func func, String DB) {
         initComponents();
         this.conexao = conexao;
+        CadastraProd.DB = DB;
+        this.priv = func.getPriv();
+        this.func = func;
+    }
+
+    public CadastraProd(Connection conexao, Admin admin, String DB) {
+        initComponents();
+        this.conexao = conexao;
+        CadastraProd.DB = DB;
+        this.admin = admin;
+        this.priv = admin.getPriv();
     }
 
     @SuppressWarnings("unchecked")
@@ -31,8 +46,15 @@ public class CadastraProd extends javax.swing.JFrame {
         fieldPreco = new javax.swing.JTextField();
         jLabel4 = new javax.swing.JLabel();
         fieldStock = new javax.swing.JTextField();
+        fieldCod = new javax.swing.JTextField();
+        jLabel5 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        addComponentListener(new java.awt.event.ComponentAdapter() {
+            public void componentShown(java.awt.event.ComponentEvent evt) {
+                formComponentShown(evt);
+            }
+        });
 
         bgCadastProd.setBackground(new java.awt.Color(51, 51, 51));
 
@@ -48,7 +70,7 @@ public class CadastraProd extends javax.swing.JFrame {
         jLabel2.setForeground(new java.awt.Color(255, 0, 0));
         jLabel2.setText("Tipo");
 
-        tipoBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "0 - Fracionário", "1 - Inteiro" }));
+        tipoBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "0 - Fracionário", "1 - Inteiro", "2 - Privado" }));
         tipoBox.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 tipoBoxActionPerformed(evt);
@@ -65,14 +87,12 @@ public class CadastraProd extends javax.swing.JFrame {
         });
 
         fieldPreco.setEnabled(false);
-        fieldPreco.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                fieldPrecoActionPerformed(evt);
-            }
-        });
 
         jLabel4.setForeground(new java.awt.Color(255, 0, 0));
         jLabel4.setText("Estoque");
+
+        jLabel5.setForeground(new java.awt.Color(255, 0, 0));
+        jLabel5.setText("Código");
 
         javax.swing.GroupLayout bgCadastProdLayout = new javax.swing.GroupLayout(bgCadastProd);
         bgCadastProd.setLayout(bgCadastProdLayout);
@@ -86,19 +106,23 @@ public class CadastraProd extends javax.swing.JFrame {
                     .addComponent(jLabel4))
                 .addGap(29, 29, 29)
                 .addGroup(bgCadastProdLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(fieldNome)
-                    .addComponent(fieldPreco)
-                    .addComponent(fieldStock, javax.swing.GroupLayout.DEFAULT_SIZE, 292, Short.MAX_VALUE))
-                .addGap(18, 18, 18)
-                .addGroup(bgCadastProdLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jLabel2)
-                    .addComponent(jLabel3))
-                .addGap(18, 18, 18)
-                .addGroup(bgCadastProdLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(cadastBotao, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(tipoBox, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(unidBox, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap(171, Short.MAX_VALUE))
+                    .addGroup(bgCadastProdLayout.createSequentialGroup()
+                        .addGroup(bgCadastProdLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(fieldNome)
+                            .addComponent(fieldPreco)
+                            .addComponent(fieldStock, javax.swing.GroupLayout.DEFAULT_SIZE, 292, Short.MAX_VALUE))
+                        .addGap(18, 18, 18)
+                        .addGroup(bgCadastProdLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jLabel2)
+                            .addComponent(jLabel3)
+                            .addComponent(jLabel5))
+                        .addGap(18, 18, 18)
+                        .addGroup(bgCadastProdLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(tipoBox, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(unidBox, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(fieldCod))))
+                .addContainerGap(138, Short.MAX_VALUE))
         );
         bgCadastProdLayout.setVerticalGroup(
             bgCadastProdLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -119,24 +143,27 @@ public class CadastraProd extends javax.swing.JFrame {
                 .addGroup(bgCadastProdLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(fieldStock, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel4)
-                    .addComponent(cadastBotao))
-                .addContainerGap(276, Short.MAX_VALUE))
+                    .addComponent(fieldCod, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel5))
+                .addGap(27, 27, 27)
+                .addComponent(cadastBotao)
+                .addContainerGap(195, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(bgCadastProd, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(39, Short.MAX_VALUE)
+                .addComponent(bgCadastProd, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(bgCadastProd, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(38, Short.MAX_VALUE)
+                .addComponent(bgCadastProd, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
 
@@ -145,32 +172,18 @@ public class CadastraProd extends javax.swing.JFrame {
 
     private void cadastBotaoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cadastBotaoActionPerformed
         // Cadastrar Produto
-
-        try {
-            /*-String url = "jdbc:h2:~/smartbox";
-            Connection conexao = DriverManager.getConnection(url, "sa", "");*/
-            String sql = "INSERT INTO produtos (nome, preco, tipo, estoque, unidade) VALUES (?, ?, ?, ?, ?)";
-            PreparedStatement ps = conexao.prepareStatement(sql);
-            ps.setString(1, fieldNome.getText());
-            ps.setFloat(2, Float.parseFloat(fieldPreco.getText()));
-            ps.setInt(3, tipoBox.getSelectedIndex());
-            ps.setFloat(4, Float.parseFloat(fieldPreco.getText()));
-            ps.setString(5, (String) unidBox.getSelectedItem());
-            ps.execute();
-
-        } catch (SQLException e) {
-            e.printStackTrace();
+        if (priv == 0) {
+            admin.cadastraProd(DB);
+        } else {
+            func.cadastraProd(DB);
         }
+        
     }//GEN-LAST:event_cadastBotaoActionPerformed
-
-    private void fieldPrecoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fieldPrecoActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_fieldPrecoActionPerformed
 
 
     private void tipoBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tipoBoxActionPerformed
         // TODO add your handling code here:
-        if(tipoBox.getSelectedIndex() == 0){
+        if (tipoBox.getSelectedIndex() == 0) {
             fieldPreco.setEnabled(false);
             fieldStock.setEnabled(false);
 
@@ -181,17 +194,25 @@ public class CadastraProd extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_tipoBoxActionPerformed
 
-    
+    private void formComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_formComponentShown
+        // TODO add your handling code here:
+        if (tipoBox.getSelectedIndex() == 0) {
+            fieldPreco.setEnabled(false);
+            fieldStock.setEnabled(false);
+
+        } else {
+            fieldPreco.setEnabled(true);
+            fieldStock.setEnabled(true);
+        }
+    }//GEN-LAST:event_formComponentShown
+
     public static void main(String args[]) {
-        String url = "jdbc:h2:~/smartbox";
-        try (Connection conexao = DriverManager.getConnection(url, "sa", "")) 
-        {
+        String url = "jdbc:h2:~/" + DB;
+        try (Connection conexao = DriverManager.getConnection(url, "sa", "")) {
             java.awt.EventQueue.invokeLater(new Runnable() {
                 public void run() {
-                    new CadastraProd(conexao).setVisible(true);
-                    
+                    new Home(conexao).setVisible(true);
                 }
-                
             });
         } catch (SQLException e) {
             e.printStackTrace();
@@ -201,15 +222,17 @@ public class CadastraProd extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel bgCadastProd;
     private javax.swing.JButton cadastBotao;
-    private javax.swing.JTextField fieldNome;
-    private javax.swing.JTextField fieldPreco;
-    private javax.swing.JTextField fieldStock;
+    protected static javax.swing.JTextField fieldCod;
+    protected static javax.swing.JTextField fieldNome;
+    protected static javax.swing.JTextField fieldPreco;
+    protected static javax.swing.JTextField fieldStock;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel precoLabel;
-    private javax.swing.JComboBox<String> tipoBox;
-    private javax.swing.JComboBox<String> unidBox;
+    protected static javax.swing.JComboBox<String> tipoBox;
+    protected static javax.swing.JComboBox<String> unidBox;
     // End of variables declaration//GEN-END:variables
 }

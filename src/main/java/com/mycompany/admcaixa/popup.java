@@ -174,22 +174,25 @@ public class popup extends javax.swing.JFrame {
                 ps.setTimestamp(1, venda.getDataHoraAtual());
                 ps.setString(5, nome);
                 ps.setInt(2, id);
-                novoEstoque = estoque - qtd;
+                estoque = estoque - qtd;
                 cod = jTextArea1.getText();
-                System.out.println("novo estoque " + novoEstoque);
+                //System.out.println("novo estoque " + novoEstoque);
                 if (tipo == 0) {
                     ps.setInt(3, PFrac.getQtd());
                     ps.setFloat(4, PFrac.valorTotal());
                 } else if (tipo == 1) {
                     ps2 = conexao.prepareStatement("UPDATE produtos SET estoque = ? WHERE cod = ?");
-                    ps2.setInt(1, novoEstoque);
+                    ps2.setInt(1, estoque);
                     System.out.println("ID: " + id + "pint get estoque: " + PInt.getEstoque() + "pint getqtd: " + PInt.getQtd());
                     ps2.setString(2, cod);
                     ps.setInt(3, PInt.getQtd());
                     ps.setFloat(4, PInt.valorTotal());
+                    ps2.executeUpdate();
+                    
+                    
                 }
                 ps.executeUpdate();
-                ps2.executeUpdate();
+                
                 Caixa.jLabel2.setText("R$" + formato.format(venda.getTotalParcial()));
 
             } catch (SQLException ex) {

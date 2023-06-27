@@ -3,6 +3,8 @@ package com.mycompany.admcaixa;
 import java.io.File;
 import java.util.*;
 import java.sql.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import org.h2.message.DbException;
 
@@ -10,6 +12,7 @@ public class Login extends javax.swing.JFrame {
 
     String DBEscolhido = "";
     File[] files = null;
+    Connection conexao = null;
 
     public Login() {
         initComponents();
@@ -32,6 +35,10 @@ public class Login extends javax.swing.JFrame {
         discoField = new javax.swing.JTextField();
         dbsAtivos = new javax.swing.JComboBox<>();
         carregaDBs = new javax.swing.JButton();
+        conecta = new javax.swing.JButton();
+        jLabel5 = new javax.swing.JLabel();
+        jLabel6 = new javax.swing.JLabel();
+        jButton1 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         addComponentListener(new java.awt.event.ComponentAdapter() {
@@ -99,6 +106,26 @@ public class Login extends javax.swing.JFrame {
             }
         });
 
+        conecta.setText("Conectar");
+        conecta.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                conectaActionPerformed(evt);
+            }
+        });
+
+        jLabel5.setForeground(new java.awt.Color(255, 255, 255));
+
+        jLabel6.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        jLabel6.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel6.setText("jLabel6");
+
+        jButton1.setText("Criar Banco de Dados");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+
         bg.setLayer(jUser, javax.swing.JLayeredPane.DEFAULT_LAYER);
         bg.setLayer(jLabel1, javax.swing.JLayeredPane.DEFAULT_LAYER);
         bg.setLayer(jPassword, javax.swing.JLayeredPane.DEFAULT_LAYER);
@@ -111,63 +138,83 @@ public class Login extends javax.swing.JFrame {
         bg.setLayer(discoField, javax.swing.JLayeredPane.DEFAULT_LAYER);
         bg.setLayer(dbsAtivos, javax.swing.JLayeredPane.DEFAULT_LAYER);
         bg.setLayer(carregaDBs, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        bg.setLayer(conecta, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        bg.setLayer(jLabel5, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        bg.setLayer(jLabel6, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        bg.setLayer(jButton1, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         javax.swing.GroupLayout bgLayout = new javax.swing.GroupLayout(bg);
         bg.setLayout(bgLayout);
         bgLayout.setHorizontalGroup(
             bgLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(bgLayout.createSequentialGroup()
-                .addGap(100, 100, 100)
-                .addGroup(bgLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel1)
-                    .addComponent(jLabel2)
-                    .addComponent(jLabel3))
-                .addGap(37, 37, 37)
-                .addGroup(bgLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGap(131, 131, 131)
+                .addGroup(bgLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(bgLayout.createSequentialGroup()
-                        .addComponent(carregaDBs, javax.swing.GroupLayout.PREFERRED_SIZE, 211, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(create)
+                        .addComponent(conecta)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jLabel6)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(login))
-                    .addComponent(jPassword)
+                        .addComponent(carregaDBs, javax.swing.GroupLayout.PREFERRED_SIZE, 211, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(bgLayout.createSequentialGroup()
-                        .addComponent(jUser, javax.swing.GroupLayout.PREFERRED_SIZE, 414, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addGroup(bgLayout.createSequentialGroup()
-                        .addComponent(discoDB, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(jLabel4)
-                        .addGap(18, 18, 18)
-                        .addComponent(discoField, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(dbsAtivos, javax.swing.GroupLayout.PREFERRED_SIZE, 167, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(62, 62, 62))
+                        .addGroup(bgLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jLabel1)
+                            .addComponent(jLabel2)
+                            .addComponent(jLabel3))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(bgLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addGroup(bgLayout.createSequentialGroup()
+                                .addComponent(create)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(login)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jButton1))
+                            .addComponent(jUser)
+                            .addGroup(bgLayout.createSequentialGroup()
+                                .addGap(144, 144, 144)
+                                .addComponent(jLabel5))
+                            .addGroup(bgLayout.createSequentialGroup()
+                                .addComponent(discoDB, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jLabel4)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(discoField, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(dbsAtivos, javax.swing.GroupLayout.PREFERRED_SIZE, 167, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jPassword))))
+                .addContainerGap(372, Short.MAX_VALUE))
         );
         bgLayout.setVerticalGroup(
             bgLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(bgLayout.createSequentialGroup()
-                .addGap(109, 109, 109)
+                .addGap(78, 78, 78)
+                .addGroup(bgLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel3)
+                    .addComponent(discoDB, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(dbsAtivos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel4)
+                    .addComponent(discoField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jLabel5)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(bgLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(conecta)
+                    .addComponent(carregaDBs)
+                    .addComponent(jLabel6))
+                .addGap(18, 18, 18)
                 .addGroup(bgLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jUser, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel1))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(bgLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jPassword, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel2))
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(bgLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(discoDB, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel3)
-                    .addComponent(jLabel4)
-                    .addComponent(discoField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(dbsAtivos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(17, 17, 17)
-                .addGroup(bgLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(login)
                     .addComponent(create)
-                    .addComponent(carregaDBs))
-                .addContainerGap(110, Short.MAX_VALUE))
+                    .addComponent(login)
+                    .addComponent(jButton1))
+                .addContainerGap(98, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -178,7 +225,7 @@ public class Login extends javax.swing.JFrame {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(bg, javax.swing.GroupLayout.Alignment.TRAILING)
+            .addComponent(bg)
         );
 
         pack();
@@ -191,11 +238,18 @@ public class Login extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, "Entre com o nome de usuario");
         } else if (jPassword.getText().equals("")) {
             JOptionPane.showMessageDialog(null, "Entre com a senha");
+
+        } else if (dbsAtivos.getSelectedIndex() == -1) {
+            JOptionPane.showMessageDialog(null, "Banco inexistente");
         } else {
 
             try {
-                String url = "jdbc:h2:~/" + DBEscolhido;
-                Connection conexao = DriverManager.getConnection(url, "sa", "");
+                conexao = Conecta.obterConexao(DBEscolhido.substring(0, DBEscolhido.length() - 6));
+
+                //String url = "jdbc:h2:~/" + DBEscolhido;
+                //System.out.println(url);
+                System.out.println(DBEscolhido);
+                //Connection conexao = DriverManager.getConnection(url, "sa", "");
                 String sql = "SELECT * FROM users";
                 PreparedStatement ps = conexao.prepareStatement(sql);
                 Statement qs = conexao.createStatement();
@@ -211,12 +265,12 @@ public class Login extends javax.swing.JFrame {
                         if (rs.getInt("PRIV") == 1) {
                             Func usuario = new Func(rs.getString("LOGIN"), rs.getString("SENHA"), rs.getString("NOME"), rs.getString("SOBRENOME"));
                             System.out.println("Ben vindo funcionario");
-                            Home home = new Home(usuario, conexao);
+                            Home home = new Home(usuario, conexao, DBEscolhido.substring(0, DBEscolhido.length() - 6));
                             home.show();
                         } else if (rs.getInt("PRIV") == 0) {
                             Admin usuario = new Admin(rs.getString("LOGIN"), rs.getString("SENHA"), rs.getString("NOME"), rs.getString("SOBRENOME"));
                             System.out.println("Ben vindo Administrador");
-                            Home home = new Home(usuario, conexao);
+                            Home home = new Home(usuario, conexao, DBEscolhido.substring(0, DBEscolhido.length() - 6));
                             home.show();
                         }
                         dispose();
@@ -225,6 +279,7 @@ public class Login extends javax.swing.JFrame {
                         JOptionPane.showMessageDialog(null, "nao encontrada ");
                     }
                 }
+                conexao.close();
             } catch (SQLException e) {
                 e.printStackTrace();
             }
@@ -234,10 +289,16 @@ public class Login extends javax.swing.JFrame {
 
     private void createActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_createActionPerformed
         //Cadastrar Usuario
-        Func func = new Func("anonimo");
-        CadastraUser cad = new CadastraUser(1, func);
-        cad.show();
-        dispose();
+        if (!DBEscolhido.equals("") && conexao != null) {
+            Func func = new Func("anonimo");
+            CadastraUser cad = new CadastraUser(func, DBEscolhido.substring(0, DBEscolhido.length() - 6));
+            System.out.println("dbescolhido: " + DBEscolhido.substring(0, DBEscolhido.length() - 6));
+            cad.show();
+            dispose();
+        } else {
+            JOptionPane.showMessageDialog(null, "Conecte-se ao qual banco que deseja criar Usuário");
+        }
+
 
     }//GEN-LAST:event_createActionPerformed
 
@@ -269,7 +330,6 @@ public class Login extends javax.swing.JFrame {
 
         } else {
             dbsAtivos.removeAllItems();
-            
 
         }
 
@@ -291,27 +351,41 @@ public class Login extends javax.swing.JFrame {
     private void formComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_formComponentShown
         // TODO add your handling code here:
 
+        jLabel1.setEnabled(false);
+        jLabel1.setVisible(false);
+        jUser.setEnabled(false);
+        jUser.setVisible(false);
+        jPassword.setEnabled(false);
+        jPassword.setVisible(false);
+        jLabel2.setEnabled(false);
+        jLabel2.setVisible(false);
+        create.setEnabled(false);
+        create.setVisible(false);
+        login.setEnabled(false);
+        login.setVisible(false);
+
         jLabel4.setVisible(false);
         discoField.setVisible(false);
         discoField.setEnabled(false);
         carregaDBs.setVisible(false);
         carregaDBs.setEnabled(false);
+        jLabel6.setVisible(false);
 
 
     }//GEN-LAST:event_formComponentShown
 
     private void dbsAtivosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_dbsAtivosActionPerformed
         // TODO add your handling code here:
-        if (!DBEscolhido.equals("")) {
-            DBEscolhido = (String) dbsAtivos.getSelectedItem();
-            DBEscolhido = DBEscolhido.substring(0, DBEscolhido.length() - 6);
-            System.out.println(DBEscolhido);
-        }
 
+        DBEscolhido = (String) dbsAtivos.getSelectedItem();
+        if (DBEscolhido != null) {
+            DBEscolhido = DBEscolhido.substring(0, DBEscolhido.length() - 6);
+        }
     }//GEN-LAST:event_dbsAtivosActionPerformed
 
     private void carregaDBsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_carregaDBsActionPerformed
         // TODO add your handling code here:
+        dbsAtivos.removeAllItems();
         File diretorio = new File(discoField.getText() + ":/Users/" + System.getProperty("user.name"));
         files = diretorio.listFiles((dir, nome) -> nome.toLowerCase().endsWith(".mv.db"));
         if (files != null && !discoField.getText().isEmpty()) {
@@ -320,10 +394,47 @@ public class Login extends javax.swing.JFrame {
                 dbsAtivos.addItem(file.getName());
             }
 
+        } else {
+            JOptionPane.showMessageDialog(null, "Dados não encontrados");
         }
 
 
     }//GEN-LAST:event_carregaDBsActionPerformed
+
+    private void conectaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_conectaActionPerformed
+        // TODO add your handling code here:
+        if (dbsAtivos.getItemCount() > 0) {
+            DBEscolhido = (String) dbsAtivos.getSelectedItem();
+            try {
+                conexao = Conecta.obterConexao(DBEscolhido.substring(0, DBEscolhido.length() - 6));
+                jLabel6.setText("Conectado!" + " ("+DBEscolhido+")");
+                jLabel6.setVisible(true);
+                jLabel1.setEnabled(true);
+                jLabel1.setVisible(true);
+                jUser.setEnabled(true);
+                jUser.setVisible(true);
+                jPassword.setEnabled(true);
+                jPassword.setVisible(true);
+                jLabel2.setEnabled(true);
+                jLabel2.setVisible(true);
+                create.setEnabled(true);
+                create.setVisible(true);
+                login.setEnabled(true);
+                login.setVisible(true);
+            } catch (SQLException ex) {
+                Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        } else {
+            JOptionPane.showMessageDialog(null, "Dados não encontrados");
+        }
+
+    }//GEN-LAST:event_conectaActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // TODO add your handling code here:
+        NovoDB ndb = new NovoDB();
+        ndb.show();
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     public static void main(String args[]) {
 
@@ -338,14 +449,18 @@ public class Login extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLayeredPane bg;
     private javax.swing.JButton carregaDBs;
+    private javax.swing.JButton conecta;
     private javax.swing.JButton create;
     private javax.swing.JComboBox<String> dbsAtivos;
     private javax.swing.JComboBox<String> discoDB;
     private javax.swing.JTextField discoField;
+    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
     private javax.swing.JPasswordField jPassword;
     private javax.swing.JTextField jUser;
     private javax.swing.JButton login;

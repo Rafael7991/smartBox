@@ -68,6 +68,11 @@ public class NovoDB extends javax.swing.JFrame {
         jLabel3.setText("Informe somente a letra do Disco onde o H2 foi instalado:");
 
         outroDisco.setEnabled(false);
+        outroDisco.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                outroDiscoActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -127,14 +132,14 @@ public class NovoDB extends javax.swing.JFrame {
         if (!nome.getText().isEmpty()) {
             if (disco.getSelectedIndex() == 2) {
                 if (!outroDisco.getText().isEmpty() && outroDisco.getText().length() == 1) {
-                    nomeDiretorio = outroDisco.getText() + "://" + "Users//" + System.getProperty("user.name") + "//";
+                    nomeDiretorio = outroDisco.getText() + ":/" + "Users/" + System.getProperty("user.name");
                 } else {
                     JOptionPane.showMessageDialog(null, "Informar disco onde H2 foi instalado, somente a letra");
                 }
             } else {
-                nomeDiretorio = (String) disco.getSelectedItem() + "/Users//" + System.getProperty("user.name") + "//";
+                nomeDiretorio = (String) disco.getSelectedItem() + "Users/" + System.getProperty("user.name");
             }
-            nomeArquivo = nome.getText(); /*+ ".mv.db";*/
+            nomeArquivo = nome.getText()+ ".mv.db";
             File diretorio = new File(nomeDiretorio);
             if (!diretorio.exists()) {
                 diretorio.mkdirs();
@@ -143,16 +148,14 @@ public class NovoDB extends javax.swing.JFrame {
             try {
                 arquivo.createNewFile();
                 System.out.println("Arquivo criado com sucesso em: " + arquivo.getAbsolutePath());
-
-                String url = "jdbc:h2:~/" + nomeArquivo;
-                Connection conexao = DriverManager.getConnection(url, "sa", "");
+                Connection conexao = Conecta.obterConexao(nome.getText());
                 String sql = "CREATE TABLE PRODUTOS (\n"
                         + "    ID INT PRIMARY KEY AUTO_INCREMENT NOT NULL,\n"
                         + "    NOME VARCHAR(255) NOT NULL,\n"
                         + "    PRECO FLOAT,\n"
                         + "    TIPO INT NOT NULL,\n"
                         + "    ESTOQUE FLOAT,\n"
-                        + "    COD INT NOT NULL\n"
+                        + "    COD INT NOT NULL UNIQUE\n"
                         + ")";
 
                 PreparedStatement ps = conexao.prepareStatement(sql);
@@ -182,7 +185,11 @@ public class NovoDB extends javax.swing.JFrame {
 
                 ps = conexao.prepareStatement(sql);
                 ps.executeUpdate();
-
+                
+                sql = "INSERT INTO users (nome, sobrenome, login, senha, priv) VALUES ('admin', 'admin', 'admin', 'admin', 0)";
+                ps = conexao.prepareStatement(sql);
+                ps.executeUpdate();
+                
             } catch (IOException e) {
                 System.out.println("Erro ao criar o arquivo: " + e.getMessage());
             } catch (SQLException ex) {
@@ -210,6 +217,10 @@ public class NovoDB extends javax.swing.JFrame {
         outroDisco.setVisible(false);
         outroDisco.setEnabled(false);
     }//GEN-LAST:event_formComponentShown
+
+    private void outroDiscoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_outroDiscoActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_outroDiscoActionPerformed
 
     public static void main(String args[]) {
 

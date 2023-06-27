@@ -39,6 +39,7 @@ public class Login extends javax.swing.JFrame {
         jLabel5 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
         jButton1 = new javax.swing.JButton();
+        descBotao = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         addComponentListener(new java.awt.event.ComponentAdapter() {
@@ -126,6 +127,13 @@ public class Login extends javax.swing.JFrame {
             }
         });
 
+        descBotao.setText("Desconectar");
+        descBotao.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                descBotaoActionPerformed(evt);
+            }
+        });
+
         bg.setLayer(jUser, javax.swing.JLayeredPane.DEFAULT_LAYER);
         bg.setLayer(jLabel1, javax.swing.JLayeredPane.DEFAULT_LAYER);
         bg.setLayer(jPassword, javax.swing.JLayeredPane.DEFAULT_LAYER);
@@ -142,6 +150,7 @@ public class Login extends javax.swing.JFrame {
         bg.setLayer(jLabel5, javax.swing.JLayeredPane.DEFAULT_LAYER);
         bg.setLayer(jLabel6, javax.swing.JLayeredPane.DEFAULT_LAYER);
         bg.setLayer(jButton1, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        bg.setLayer(descBotao, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         javax.swing.GroupLayout bgLayout = new javax.swing.GroupLayout(bg);
         bg.setLayout(bgLayout);
@@ -149,13 +158,15 @@ public class Login extends javax.swing.JFrame {
             bgLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(bgLayout.createSequentialGroup()
                 .addGap(131, 131, 131)
-                .addGroup(bgLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                .addGroup(bgLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(bgLayout.createSequentialGroup()
                         .addComponent(conecta)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jLabel6)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(carregaDBs, javax.swing.GroupLayout.PREFERRED_SIZE, 211, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jButton1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(descBotao))
                     .addGroup(bgLayout.createSequentialGroup()
                         .addGroup(bgLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(jLabel1)
@@ -166,9 +177,7 @@ public class Login extends javax.swing.JFrame {
                             .addGroup(bgLayout.createSequentialGroup()
                                 .addComponent(create)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(login)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jButton1))
+                                .addComponent(login))
                             .addComponent(jUser)
                             .addGroup(bgLayout.createSequentialGroup()
                                 .addGap(144, 144, 144)
@@ -181,8 +190,10 @@ public class Login extends javax.swing.JFrame {
                                 .addComponent(discoField, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(dbsAtivos, javax.swing.GroupLayout.PREFERRED_SIZE, 167, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(jPassword))))
-                .addContainerGap(372, Short.MAX_VALUE))
+                            .addComponent(jPassword))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(carregaDBs, javax.swing.GroupLayout.PREFERRED_SIZE, 211, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(149, Short.MAX_VALUE))
         );
         bgLayout.setVerticalGroup(
             bgLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -193,14 +204,16 @@ public class Login extends javax.swing.JFrame {
                     .addComponent(discoDB, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(dbsAtivos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel4)
-                    .addComponent(discoField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(discoField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(carregaDBs))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jLabel5)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(bgLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(conecta)
-                    .addComponent(carregaDBs)
-                    .addComponent(jLabel6))
+                    .addComponent(jLabel6)
+                    .addComponent(jButton1)
+                    .addComponent(descBotao))
                 .addGap(18, 18, 18)
                 .addGroup(bgLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jUser, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -212,9 +225,8 @@ public class Login extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(bgLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(create)
-                    .addComponent(login)
-                    .addComponent(jButton1))
-                .addContainerGap(98, Short.MAX_VALUE))
+                    .addComponent(login))
+                .addContainerGap(97, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -244,12 +256,6 @@ public class Login extends javax.swing.JFrame {
         } else {
 
             try {
-                conexao = Conecta.obterConexao(DBEscolhido.substring(0, DBEscolhido.length() - 6));
-
-                //String url = "jdbc:h2:~/" + DBEscolhido;
-                //System.out.println(url);
-                System.out.println(DBEscolhido);
-                //Connection conexao = DriverManager.getConnection(url, "sa", "");
                 String sql = "SELECT * FROM users";
                 PreparedStatement ps = conexao.prepareStatement(sql);
                 Statement qs = conexao.createStatement();
@@ -279,9 +285,10 @@ public class Login extends javax.swing.JFrame {
                         JOptionPane.showMessageDialog(null, "nao encontrada ");
                     }
                 }
-                conexao.close();
+                //conexao.close();
             } catch (SQLException e) {
-                e.printStackTrace();
+                System.out.println("Falha no login: " + e.getMessage());
+                JOptionPane.showMessageDialog(null, "Banco de Dados desconectado!");
             }
 
         }
@@ -291,7 +298,7 @@ public class Login extends javax.swing.JFrame {
         //Cadastrar Usuario
         if (!DBEscolhido.equals("") && conexao != null) {
             Func func = new Func("anonimo");
-            CadastraUser cad = new CadastraUser(func, DBEscolhido.substring(0, DBEscolhido.length() - 6));
+            CadastraUser cad = new CadastraUser(conexao,func, DBEscolhido.substring(0, DBEscolhido.length() - 6));
             System.out.println("dbescolhido: " + DBEscolhido.substring(0, DBEscolhido.length() - 6));
             cad.show();
             dispose();
@@ -371,6 +378,11 @@ public class Login extends javax.swing.JFrame {
         carregaDBs.setEnabled(false);
         jLabel6.setVisible(false);
 
+        if (conexao == null) {
+            descBotao.setEnabled(false);
+            descBotao.setVisible(false);
+        }
+
 
     }//GEN-LAST:event_formComponentShown
 
@@ -407,7 +419,7 @@ public class Login extends javax.swing.JFrame {
             DBEscolhido = (String) dbsAtivos.getSelectedItem();
             try {
                 conexao = Conecta.obterConexao(DBEscolhido.substring(0, DBEscolhido.length() - 6));
-                jLabel6.setText("Conectado!" + " ("+DBEscolhido+")");
+                jLabel6.setText("Conectado!" + " (" + DBEscolhido + ")");
                 jLabel6.setVisible(true);
                 jLabel1.setEnabled(true);
                 jLabel1.setVisible(true);
@@ -421,6 +433,8 @@ public class Login extends javax.swing.JFrame {
                 create.setVisible(true);
                 login.setEnabled(true);
                 login.setVisible(true);
+                descBotao.setEnabled(true);
+                descBotao.setVisible(true);
             } catch (SQLException ex) {
                 Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -435,6 +449,19 @@ public class Login extends javax.swing.JFrame {
         NovoDB ndb = new NovoDB();
         ndb.show();
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void descBotaoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_descBotaoActionPerformed
+        try {
+            if (conexao != null) {
+                conexao.close();
+                jLabel6.setText("");
+                System.out.println("Conexao com BD encerrada");
+            }
+
+        } catch (SQLException ex) {
+            Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_descBotaoActionPerformed
 
     public static void main(String args[]) {
 
@@ -452,6 +479,7 @@ public class Login extends javax.swing.JFrame {
     private javax.swing.JButton conecta;
     private javax.swing.JButton create;
     private javax.swing.JComboBox<String> dbsAtivos;
+    private javax.swing.JButton descBotao;
     private javax.swing.JComboBox<String> discoDB;
     private javax.swing.JTextField discoField;
     private javax.swing.JButton jButton1;

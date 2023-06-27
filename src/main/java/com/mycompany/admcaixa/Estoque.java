@@ -45,6 +45,10 @@ public class Estoque extends javax.swing.JFrame {
         nome = "convidado";
         sobrenome = "";
     }
+    
+     public Estoque(){
+        initComponents();     
+    }
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -55,6 +59,7 @@ public class Estoque extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
+        volta = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         addComponentListener(new java.awt.event.ComponentAdapter() {
@@ -107,6 +112,13 @@ public class Estoque extends javax.swing.JFrame {
         ));
         jScrollPane1.setViewportView(jTable1);
 
+        volta.setText("VOLTAR");
+        volta.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                voltaActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -115,8 +127,11 @@ public class Estoque extends javax.swing.JFrame {
                 .addGap(61, 61, 61)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(835, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(volta)))
+                .addContainerGap(804, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -124,7 +139,9 @@ public class Estoque extends javax.swing.JFrame {
                 .addContainerGap(44, Short.MAX_VALUE)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(volta))
                 .addGap(33, 33, 33))
         );
 
@@ -153,12 +170,27 @@ public class Estoque extends javax.swing.JFrame {
 
     }//GEN-LAST:event_formComponentShown
 
+    private void voltaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_voltaActionPerformed
+        // VOLTAR
+        if (admin == null) {
+            System.out.println("criado home com func");
+            System.out.println(func.getNome());
+            Home home = new Home(func, conexao, DB);
+            home.show();
+        } else {
+            System.out.println("criado home com admin");
+            Home home = new Home(admin, conexao, DB);
+            home.show();
+        }
+        dispose();
+    }//GEN-LAST:event_voltaActionPerformed
+
     public static void main(String args[]) {
         String url = "jdbc:h2:~/" + DB;
         try (Connection conexao = DriverManager.getConnection(url, "sa", "")) {
             java.awt.EventQueue.invokeLater(new Runnable() {
                 public void run() {
-                    new Home(conexao).setVisible(true);
+                    new Estoque().setVisible(true);
                 }
             });
         } catch (SQLException e) {
@@ -172,5 +204,6 @@ public class Estoque extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTable1;
+    private javax.swing.JButton volta;
     // End of variables declaration//GEN-END:variables
 }

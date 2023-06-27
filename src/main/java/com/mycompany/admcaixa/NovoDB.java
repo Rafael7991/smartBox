@@ -68,11 +68,6 @@ public class NovoDB extends javax.swing.JFrame {
         jLabel3.setText("Informe somente a letra do Disco onde o H2 foi instalado:");
 
         outroDisco.setEnabled(false);
-        outroDisco.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                outroDiscoActionPerformed(evt);
-            }
-        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -217,10 +212,6 @@ public class NovoDB extends javax.swing.JFrame {
         outroDisco.setVisible(false);
         outroDisco.setEnabled(false);
     }//GEN-LAST:event_formComponentShown
-
-    private void outroDiscoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_outroDiscoActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_outroDiscoActionPerformed
 
     public static void main(String args[]) {
 

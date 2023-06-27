@@ -3,10 +3,12 @@ package com.mycompany.admcaixa;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class Home extends javax.swing.JFrame {
 
-    private final Connection conexao;
+    private Connection conexao;
     private Func func;
     private Admin admin;
     private static String DB;
@@ -50,6 +52,8 @@ public class Home extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jButton5 = new javax.swing.JButton();
+        jButton6 = new javax.swing.JButton();
+        jButton7 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         addComponentListener(new java.awt.event.ComponentAdapter() {
@@ -105,6 +109,20 @@ public class Home extends javax.swing.JFrame {
             }
         });
 
+        jButton6.setText("SAIR");
+        jButton6.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton6ActionPerformed(evt);
+            }
+        });
+
+        jButton7.setText("VOLTAR");
+        jButton7.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton7ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout bgHomeLayout = new javax.swing.GroupLayout(bgHome);
         bgHome.setLayout(bgHomeLayout);
         bgHomeLayout.setHorizontalGroup(
@@ -120,6 +138,10 @@ public class Home extends javax.swing.JFrame {
                     .addGroup(bgHomeLayout.createSequentialGroup()
                         .addGap(137, 137, 137)
                         .addGroup(bgHomeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addGroup(bgHomeLayout.createSequentialGroup()
+                                .addComponent(jButton6)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jButton7))
                             .addComponent(jButton3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, 313, Short.MAX_VALUE)
                             .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -140,7 +162,11 @@ public class Home extends javax.swing.JFrame {
                 .addComponent(jButton4)
                 .addGap(18, 18, 18)
                 .addComponent(jButton5)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 297, Short.MAX_VALUE)
+                .addGap(18, 18, 18)
+                .addGroup(bgHomeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jButton6)
+                    .addComponent(jButton7))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 256, Short.MAX_VALUE)
                 .addComponent(jLabel2)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel1)
@@ -163,33 +189,41 @@ public class Home extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // Gerenciamento de caixa
-        Caixa caixa = new Caixa(conexao, DB);
-        caixa.show();
-        
+        if (admin == null) {
+            Caixa caixa = new Caixa(DB, func);
+            caixa.show();
+        } else {
+            Caixa caixa = new Caixa(DB, admin);
+            caixa.show();
+        }
+
+        dispose();
+
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         //Cadastrar Produto
         if (admin == null) {
-           CadastraProd cad = new CadastraProd(conexao,func, DB);
-           cad.show();
+            CadastraProd cad = new CadastraProd(conexao, func, DB);
+            cad.show();
+
         } else {
-            CadastraProd cad = new CadastraProd(conexao,admin,DB);
+            CadastraProd cad = new CadastraProd(conexao, admin, DB);
             cad.show();
         }
-
+        dispose();
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         // Cadastrar Usuario
-        if(admin == null){
-            CadastraUser cad = new CadastraUser(func, DB);
+        if (admin == null) {
+            CadastraUser cad = new CadastraUser(conexao, func, DB);
             cad.show();
         } else {
-            CadastraUser cad = new CadastraUser(admin, DB);
+            CadastraUser cad = new CadastraUser(conexao, admin, DB);
             cad.show();
         }
-        
+        dispose();
 
     }//GEN-LAST:event_jButton3ActionPerformed
 
@@ -200,21 +234,49 @@ public class Home extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton4ActionPerformed
 
     private void formComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_formComponentShown
-        // TODO add your handling code here:
+        // ABRIU
         jLabel2.setText("Conectado em: " + DB + " como: " + nome + " " + sobrenome);
     }//GEN-LAST:event_formComponentShown
 
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
-        // TODO add your handling code here:
-        if(admin == null){
-            Estoque est = new Estoque(func,conexao, DB );
+        // ESTOQUE
+        if (admin == null) {
+            Estoque est = new Estoque(func, conexao, DB);
             est.show();
         } else {
-            Estoque est = new Estoque(admin, conexao, DB );
+            Estoque est = new Estoque(admin, conexao, DB);
             est.show();
         }
-        
+        dispose();
     }//GEN-LAST:event_jButton5ActionPerformed
+
+    private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
+        try {
+            if (conexao != null) {
+                conexao.close();
+                dispose();
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(Home.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+    }//GEN-LAST:event_jButton6ActionPerformed
+
+    private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
+        try {
+            if (conexao != null) {
+                conexao.close();
+                Login log = new Login();
+                log.show();
+                dispose();
+            }
+
+        } catch (SQLException ex) {
+            Logger.getLogger(Home.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+
+    }//GEN-LAST:event_jButton7ActionPerformed
 
     public static void main(String args[]) {
         String url = "jdbc:h2:~/" + DB;
@@ -225,7 +287,7 @@ public class Home extends javax.swing.JFrame {
                 }
             });
         } catch (SQLException e) {
-            e.printStackTrace();
+            System.out.println("Falha na conexão: " + e.getMessage());
         }
     }
 
@@ -236,6 +298,8 @@ public class Home extends javax.swing.JFrame {
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
     private javax.swing.JButton jButton5;
+    private javax.swing.JButton jButton6;
+    private javax.swing.JButton jButton7;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     // End of variables declaration//GEN-END:variables

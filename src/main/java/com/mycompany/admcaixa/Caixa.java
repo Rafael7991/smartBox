@@ -1,4 +1,5 @@
 package com.mycompany.admcaixa;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -14,15 +15,33 @@ public class Caixa extends javax.swing.JFrame {
 
     public Connection conexao;
     private static String DB;
+    private Func func;
+    private Admin admin;
     private ArrayList<String> datahora;
     private ArrayList<String> nomeProd;
     private ArrayList<Float> valor;
 
-    public Caixa(Connection conexao, String DB) {
+    public Caixa(String DB, Func usuario) {
+        initComponents();
+        System.out.println("Criado usuario func");
+        DecimalFormat formato = new DecimalFormat("#,##0.00");
+        this.func = usuario;
+        this.DB = DB;
+        //this.conexao = conexao;
+    }
+
+    public Caixa(String DB, Admin usuario) {
+        initComponents();
+        System.out.println("Criado usuario admin");
+        DecimalFormat formato = new DecimalFormat("#,##0.00");
+        this.admin = usuario;
+        this.DB = DB;
+        //this.conexao = conexao;
+    }
+    
+    public Caixa(Connection conexao){
         initComponents();
         DecimalFormat formato = new DecimalFormat("#,##0.00");
-        this.DB = DB;
-        this.conexao = conexao;
     }
 
     @SuppressWarnings("unchecked")
@@ -37,6 +56,7 @@ public class Caixa extends javax.swing.JFrame {
         jButton1 = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
+        jButton2 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setBackground(new java.awt.Color(153, 153, 153));
@@ -115,6 +135,13 @@ public class Caixa extends javax.swing.JFrame {
         ));
         jScrollPane1.setViewportView(jTable1);
 
+        jButton2.setText("VOLTAR");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -126,6 +153,8 @@ public class Caixa extends javax.swing.JFrame {
                     .addComponent(jScrollPane1)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(vendaBotao, javax.swing.GroupLayout.PREFERRED_SIZE, 297, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(jButton2)
                         .addGap(18, 18, 18)
                         .addComponent(jButton1)
                         .addGap(0, 0, Short.MAX_VALUE)))
@@ -140,7 +169,8 @@ public class Caixa extends javax.swing.JFrame {
                 .addGap(29, 29, 29)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(vendaBotao, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton1))
+                    .addComponent(jButton1)
+                    .addComponent(jButton2))
                 .addContainerGap(12, Short.MAX_VALUE))
         );
 
@@ -161,8 +191,14 @@ public class Caixa extends javax.swing.JFrame {
     }//GEN-LAST:event_vendaBotaoActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // SAIR
-        dispose();
+        try {
+            // SAIR
+            conexao.close();
+            dispose();
+        } catch (SQLException ex) {
+            Logger.getLogger(Caixa.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void formComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_formComponentShown
@@ -181,28 +217,44 @@ public class Caixa extends javax.swing.JFrame {
                 nomeProd.add(rs.getString("nome"));
                 valor.add(rs.getFloat("total"));
             }
-            VendasTableModel modeloTabela = new VendasTableModel( datahora, nomeProd, valor);
+            VendasTableModel modeloTabela = new VendasTableModel(datahora, nomeProd, valor);
             jTable1.setModel(modeloTabela);
         } catch (SQLException ex) {
             Logger.getLogger(Caixa.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_formComponentShown
 
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        // VOLTAR
+        if (admin == null) {
+            System.out.println("criado home com func");
+            System.out.println(func.getNome());
+            Home home = new Home(func,conexao,DB);
+            home.show();
+        } else {
+            System.out.println("criado home com admin");
+            Home home = new Home(admin,conexao,DB);
+            home.show();
+        }
+        dispose();
+    }//GEN-LAST:event_jButton2ActionPerformed
+
     public static void main(String args[]) {
         String url = "jdbc:h2:~/" + DB;
         try (Connection conexao = DriverManager.getConnection(url, "sa", "")) {
             java.awt.EventQueue.invokeLater(new Runnable() {
                 public void run() {
-                    new Home(conexao).setVisible(true);
+                    new Caixa(conexao).setVisible(true);
                 }
             });
         } catch (SQLException e) {
-            e.printStackTrace();
+            System.out.println("Falha na conexão: " + e.getMessage());
         }
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
     protected static javax.swing.JLabel jLabel1;
     protected static javax.swing.JLabel jLabel2;
     protected static javax.swing.JLabel jLabel3;

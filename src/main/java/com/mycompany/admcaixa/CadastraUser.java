@@ -1,31 +1,33 @@
 package com.mycompany.admcaixa;
 
-import java.sql.*;
+//import java.sql.*;
+import java.sql.Connection;
 import javax.swing.JOptionPane;
 
 public class CadastraUser extends javax.swing.JFrame {
 
+    public Connection conexao;
     private int priv;
     private Func func;
     private Admin admin;
     private static String DB;
 
-    public CadastraUser(Func func, String DB) {
+    public CadastraUser(Connection conexao, Func func, String DB) {
         initComponents();
         this.priv = func.getPriv();
         this.func = func;
-        this.DB = DB;
+        CadastraUser.DB = DB;
         privBox.setEnabled(false);
         privBox.setVisible(false);
         privLabel.setVisible(false);
 
     }
 
-    public CadastraUser(Admin admin, String DB) {
+    public CadastraUser(Connection conexao, Admin admin, String DB) {
         initComponents();
         this.admin = admin;
         this.priv = admin.getPriv();
-        this.DB = DB;
+        CadastraUser.DB = DB;
     }
 
     public CadastraUser(int priv, String DB) {
@@ -54,9 +56,9 @@ public class CadastraUser extends javax.swing.JFrame {
         privBox = new javax.swing.JComboBox<>();
         privLabel = new javax.swing.JLabel();
         cadastraBotao = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
         jButton1 = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
+        volta = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         addComponentListener(new java.awt.event.ComponentAdapter() {
@@ -91,8 +93,6 @@ public class CadastraUser extends javax.swing.JFrame {
             }
         });
 
-        jButton2.setText("Voltar");
-
         jButton1.setText("SAIR");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -103,52 +103,55 @@ public class CadastraUser extends javax.swing.JFrame {
         jLabel1.setForeground(new java.awt.Color(255, 255, 255));
         jLabel1.setText("jLabel1");
 
+        volta.setText("VOLTAR");
+        volta.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                voltaActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout bgCadastraUserLayout = new javax.swing.GroupLayout(bgCadastraUser);
         bgCadastraUser.setLayout(bgCadastraUserLayout);
         bgCadastraUserLayout.setHorizontalGroup(
             bgCadastraUserLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(bgCadastraUserLayout.createSequentialGroup()
                 .addGroup(bgCadastraUserLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, bgCadastraUserLayout.createSequentialGroup()
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jButton2))
                     .addGroup(bgCadastraUserLayout.createSequentialGroup()
-                        .addGroup(bgCadastraUserLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGap(82, 82, 82)
+                        .addGroup(bgCadastraUserLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addGroup(bgCadastraUserLayout.createSequentialGroup()
-                                .addGap(82, 82, 82)
-                                .addGroup(bgCadastraUserLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addGroup(bgCadastraUserLayout.createSequentialGroup()
+                                .addGroup(bgCadastraUserLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel2)
+                                    .addComponent(nomeLabel))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addGroup(bgCadastraUserLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(sobrenomeField, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 361, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(nomeField, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 361, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addGroup(bgCadastraUserLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                .addComponent(loginField, javax.swing.GroupLayout.PREFERRED_SIZE, 361, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGroup(bgCadastraUserLayout.createSequentialGroup()
+                                    .addGroup(bgCadastraUserLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                         .addGroup(bgCadastraUserLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(jLabel2)
-                                            .addComponent(nomeLabel))
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addGroup(bgCadastraUserLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(sobrenomeField, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 361, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addComponent(nomeField, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 361, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                    .addGroup(bgCadastraUserLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                        .addComponent(loginField, javax.swing.GroupLayout.PREFERRED_SIZE, 361, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(jLabel4)
+                                            .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.TRAILING))
+                                        .addComponent(privLabel))
+                                    .addGroup(bgCadastraUserLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, bgCadastraUserLayout.createSequentialGroup()
+                                            .addGap(12, 12, 12)
+                                            .addComponent(privBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                            .addComponent(jButton1)
+                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                            .addComponent(volta)
+                                            .addGap(12, 12, 12)
+                                            .addComponent(cadastraBotao))
                                         .addGroup(bgCadastraUserLayout.createSequentialGroup()
-                                            .addGroup(bgCadastraUserLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                                .addGroup(bgCadastraUserLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                                    .addComponent(jLabel4)
-                                                    .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.TRAILING))
-                                                .addComponent(privLabel))
-                                            .addGroup(bgCadastraUserLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, bgCadastraUserLayout.createSequentialGroup()
-                                                    .addGap(12, 12, 12)
-                                                    .addComponent(privBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                                    .addComponent(jButton1)
-                                                    .addGap(18, 18, 18)
-                                                    .addComponent(cadastraBotao))
-                                                .addGroup(bgCadastraUserLayout.createSequentialGroup()
-                                                    .addGap(88, 88, 88)
-                                                    .addComponent(senhaField, javax.swing.GroupLayout.PREFERRED_SIZE, 361, javax.swing.GroupLayout.PREFERRED_SIZE)))))))
-                            .addGroup(bgCadastraUserLayout.createSequentialGroup()
-                                .addContainerGap()
-                                .addComponent(jLabel1)))
-                        .addGap(0, 214, Short.MAX_VALUE)))
-                .addContainerGap())
+                                            .addGap(88, 88, 88)
+                                            .addComponent(senhaField, javax.swing.GroupLayout.PREFERRED_SIZE, 361, javax.swing.GroupLayout.PREFERRED_SIZE)))))))
+                    .addGroup(bgCadastraUserLayout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jLabel1)))
+                .addContainerGap(220, Short.MAX_VALUE))
         );
         bgCadastraUserLayout.setVerticalGroup(
             bgCadastraUserLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -174,10 +177,9 @@ public class CadastraUser extends javax.swing.JFrame {
                     .addComponent(privBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(privLabel)
                     .addComponent(cadastraBotao)
-                    .addComponent(jButton1))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 197, Short.MAX_VALUE)
-                .addComponent(jButton2)
-                .addGap(37, 37, 37)
+                    .addComponent(jButton1)
+                    .addComponent(volta))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 257, Short.MAX_VALUE)
                 .addComponent(jLabel1)
                 .addContainerGap())
         );
@@ -219,9 +221,21 @@ public class CadastraUser extends javax.swing.JFrame {
         jLabel1.setText("conectado em: " + DB);
     }//GEN-LAST:event_formComponentShown
 
+    private void voltaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_voltaActionPerformed
+        // VOLTAR
+        if (admin == null) {
+            Home home = new Home(func, conexao, DB);
+            home.show();
+        } else {
+            Home home = new Home(admin, conexao, DB);
+            home.show();
+        }
+        dispose();
+    }//GEN-LAST:event_voltaActionPerformed
+
     public static void main(String args[]) {
 
-        try {
+        /*try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
                 if ("Nimbus".equals(info.getName())) {
                     javax.swing.UIManager.setLookAndFeel(info.getClassName());
@@ -237,8 +251,7 @@ public class CadastraUser extends javax.swing.JFrame {
             java.util.logging.Logger.getLogger(CadastraUser.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
             java.util.logging.Logger.getLogger(CadastraUser.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-
+        }*/
         java.awt.EventQueue.invokeLater(new Runnable() {
             @Override
             public void run() {
@@ -252,7 +265,6 @@ public class CadastraUser extends javax.swing.JFrame {
     private javax.swing.JPanel bgCadastraUser;
     private javax.swing.JButton cadastraBotao;
     private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -264,5 +276,6 @@ public class CadastraUser extends javax.swing.JFrame {
     private static javax.swing.JLabel privLabel;
     protected static javax.swing.JTextField senhaField;
     protected static javax.swing.JTextField sobrenomeField;
+    private javax.swing.JButton volta;
     // End of variables declaration//GEN-END:variables
 }

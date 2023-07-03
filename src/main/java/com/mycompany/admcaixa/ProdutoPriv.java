@@ -13,7 +13,7 @@ public class ProdutoPriv extends Item{
     public float valorTotal(){
         return preco*estoque;
     }
-
+/*
     public String getNome() {
         return nome;
     }
@@ -37,5 +37,5 @@ public class ProdutoPriv extends Item{
     public int getEstoque() {
         return estoque;
     }
-
+*/
 }

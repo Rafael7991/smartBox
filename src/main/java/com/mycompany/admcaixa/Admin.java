@@ -1,10 +1,8 @@
 package com.mycompany.admcaixa;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
-import javax.swing.JOptionPane;
 
 public class Admin implements iUsuario {
 
@@ -67,7 +65,6 @@ public class Admin implements iUsuario {
 
     @Override
     public void cadastraProd(String DB) {
-
         try {
             Connection conexao = Conecta.obterConexao(DB);
             String sql = "INSERT INTO produtos (nome, preco, tipo, estoque, unidade, cod) VALUES (?, ?, ?, ?, ?, ?)";
@@ -92,7 +89,6 @@ public class Admin implements iUsuario {
                 } else {
                     ps.setFloat(4, Float.parseFloat(CadastraProd.fieldStock.getText()));
                 }
-
             }
             ps.setString(5, (String) CadastraProd.unidBox.getSelectedItem());
             ps.setString(6, CadastraProd.fieldCod.getText());
@@ -100,7 +96,5 @@ public class Admin implements iUsuario {
         } catch (SQLException e) {
             System.out.println("Ocorreu um erro: " + e.getMessage());
         }
-
     }
-
 }

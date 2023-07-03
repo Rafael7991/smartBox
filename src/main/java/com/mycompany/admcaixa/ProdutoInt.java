@@ -10,6 +10,11 @@ public class ProdutoInt extends Item {
         tipo = 1;
     }
 
+    @Override
+    public float valorTotal() {
+        return qtd * preco;
+    }
+    /*
     public String getNome() {
         return nome;
     }
@@ -18,10 +23,7 @@ public class ProdutoInt extends Item {
         return cod;
     }
 
-    @Override
-    public float valorTotal() {
-        return qtd * preco;
-    }
+    
 
     public int getQtd() {
         return qtd;
@@ -30,7 +32,7 @@ public class ProdutoInt extends Item {
     public float getPreco() {
         return preco;
     }
-
+*/
     public int getEstoque() {
         return estoque;
     }

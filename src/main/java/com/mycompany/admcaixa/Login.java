@@ -94,6 +94,11 @@ public class Login extends javax.swing.JFrame {
 
         discoField.setEnabled(false);
 
+        dbsAtivos.addComponentListener(new java.awt.event.ComponentAdapter() {
+            public void componentShown(java.awt.event.ComponentEvent evt) {
+                dbsAtivosComponentShown(evt);
+            }
+        });
         dbsAtivos.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 dbsAtivosActionPerformed(evt);
@@ -237,7 +242,7 @@ public class Login extends javax.swing.JFrame {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(bg)
+            .addComponent(bg, javax.swing.GroupLayout.Alignment.TRAILING)
         );
 
         pack();
@@ -298,15 +303,13 @@ public class Login extends javax.swing.JFrame {
         //Cadastrar Usuario
         if (!DBEscolhido.equals("") && conexao != null) {
             Func func = new Func("anonimo");
-            CadastraUser cad = new CadastraUser(conexao,func, DBEscolhido.substring(0, DBEscolhido.length() - 6));
+            CadastraUser cad = new CadastraUser(conexao, func, DBEscolhido.substring(0, DBEscolhido.length() - 6));
             System.out.println("dbescolhido: " + DBEscolhido.substring(0, DBEscolhido.length() - 6));
             cad.show();
             dispose();
         } else {
             JOptionPane.showMessageDialog(null, "Conecte-se ao qual banco que deseja criar Usuário");
         }
-
-
     }//GEN-LAST:event_createActionPerformed
 
     private void jUserActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jUserActionPerformed
@@ -314,49 +317,10 @@ public class Login extends javax.swing.JFrame {
     }//GEN-LAST:event_jUserActionPerformed
 
     private void discoDBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_discoDBActionPerformed
-        // TODO add your handling code here:
 
-        if (discoDB.getSelectedIndex() == 0) {
-            dbsAtivos.removeAllItems();
-            File diretorio = new File("C:/Users/" + System.getProperty("user.name"));
-            files = diretorio.listFiles((dir, nome) -> nome.toLowerCase().endsWith(".mv.db"));
-            if (files.length > 0) {
-                for (File file : files) {
-                    dbsAtivos.addItem(file.getName());
-                }
-            }
-        } else if (discoDB.getSelectedIndex() == 1) {
-            dbsAtivos.removeAllItems();
-            File diretorio = new File("D:/Users/" + System.getProperty("user.name"));
-            files = diretorio.listFiles((dir, nome) -> nome.toLowerCase().endsWith(".mv.db"));
-            if (files.length > 0) {
-                for (File file : files) {
-                    dbsAtivos.addItem(file.getName());
-                }
-            }
-
-        } else {
-            dbsAtivos.removeAllItems();
-
-        }
-
-        if (discoDB.getSelectedIndex() == 2) {
-            jLabel4.setVisible(true);
-            discoField.setVisible(true);
-            discoField.setEnabled(true);
-            carregaDBs.setVisible(true);
-            carregaDBs.setEnabled(true);
-        } else {
-            jLabel4.setVisible(false);
-            discoField.setVisible(false);
-            discoField.setEnabled(false);
-            carregaDBs.setVisible(false);
-            carregaDBs.setEnabled(false);
-        }
     }//GEN-LAST:event_discoDBActionPerformed
 
     private void formComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_formComponentShown
-        // TODO add your handling code here:
 
         jLabel1.setEnabled(false);
         jLabel1.setVisible(false);
@@ -382,34 +346,23 @@ public class Login extends javax.swing.JFrame {
             descBotao.setEnabled(false);
             descBotao.setVisible(false);
         }
-
-
-    }//GEN-LAST:event_formComponentShown
-
-    private void dbsAtivosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_dbsAtivosActionPerformed
-        // TODO add your handling code here:
-
-        DBEscolhido = (String) dbsAtivos.getSelectedItem();
-        if (DBEscolhido != null) {
-            DBEscolhido = DBEscolhido.substring(0, DBEscolhido.length() - 6);
-        }
-    }//GEN-LAST:event_dbsAtivosActionPerformed
-
-    private void carregaDBsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_carregaDBsActionPerformed
-        // TODO add your handling code here:
-        dbsAtivos.removeAllItems();
-        File diretorio = new File(discoField.getText() + ":/Users/" + System.getProperty("user.name"));
+        
+        String userHome = System.getProperty("user.home");
+        File diretorio = new File(userHome);
+        System.out.println(userHome);
         files = diretorio.listFiles((dir, nome) -> nome.toLowerCase().endsWith(".mv.db"));
-        if (files != null && !discoField.getText().isEmpty()) {
-
+        if (files.length > 0) {
             for (File file : files) {
                 dbsAtivos.addItem(file.getName());
             }
-
-        } else {
-            JOptionPane.showMessageDialog(null, "Dados não encontrados");
         }
+    }//GEN-LAST:event_formComponentShown
 
+    private void dbsAtivosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_dbsAtivosActionPerformed
+      
+    }//GEN-LAST:event_dbsAtivosActionPerformed
+
+    private void carregaDBsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_carregaDBsActionPerformed
 
     }//GEN-LAST:event_carregaDBsActionPerformed
 
@@ -462,6 +415,10 @@ public class Login extends javax.swing.JFrame {
             Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_descBotaoActionPerformed
+
+    private void dbsAtivosComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_dbsAtivosComponentShown
+   
+    }//GEN-LAST:event_dbsAtivosComponentShown
 
     public static void main(String args[]) {
 

@@ -12,7 +12,7 @@ public class ProdutoFrac extends Item{
     public float valorTotal(){
         return preco;
     }
-
+/*
     public String getNome() {
         return nome;
     }
@@ -28,5 +28,5 @@ public class ProdutoFrac extends Item{
     public int getQtd() {
         return qtd;
     }
-
+*/
 }

@@ -4,12 +4,10 @@ import java.awt.Desktop;
 import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.Paragraph;
-import com.itextpdf.text.Phrase;
 import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -31,6 +29,7 @@ public class Estoque extends javax.swing.JFrame {
     private Admin admin;
     private String nome;
     private String sobrenome;
+    private ArrayList<Integer> codProd;
     private ArrayList<String> nomeProd;
     private ArrayList<Float> estoqueProd;
 
@@ -67,15 +66,13 @@ public class Estoque extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jPanel1 = new javax.swing.JPanel();
-        jLabel1 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
         volta = new javax.swing.JButton();
         print = new javax.swing.JButton();
         abrir = new javax.swing.JButton();
         arqs = new javax.swing.JComboBox<>();
+        jLabel3 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         addComponentListener(new java.awt.event.ComponentAdapter() {
@@ -83,37 +80,6 @@ public class Estoque extends javax.swing.JFrame {
                 formComponentShown(evt);
             }
         });
-
-        jPanel1.setBackground(new java.awt.Color(255, 0, 0));
-
-        jLabel1.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
-        jLabel1.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel1.setText("----------------------------");
-
-        jLabel2.setText("-----------------------------------------------------------");
-
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 386, Short.MAX_VALUE)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 324, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE)))
-                .addContainerGap())
-        );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLabel1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 32, Short.MAX_VALUE)
-                .addComponent(jLabel2)
-                .addGap(14, 14, 14))
-        );
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -126,6 +92,11 @@ public class Estoque extends javax.swing.JFrame {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
+        jTable1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jTable1MouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(jTable1);
 
         volta.setText("VOLTAR");
@@ -149,6 +120,12 @@ public class Estoque extends javax.swing.JFrame {
             }
         });
 
+        jLabel3.setBackground(new java.awt.Color(51, 51, 255));
+        jLabel3.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        jLabel3.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel3.setText("jLabel3");
+        jLabel3.setOpaque(true);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -156,54 +133,59 @@ public class Estoque extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGap(61, 61, 61)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(volta)
-                            .addComponent(print)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(abrir)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(arqs, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))))
-                .addContainerGap(743, Short.MAX_VALUE))
+                        .addComponent(abrir)
+                        .addGap(18, 18, 18)
+                        .addComponent(arqs, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                        .addComponent(print)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(layout.createSequentialGroup()
+                            .addComponent(jLabel3)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(volta))))
+                .addContainerGap(79, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(44, Short.MAX_VALUE)
+                .addContainerGap(45, Short.MAX_VALUE)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addGap(25, 25, 25)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(abrir)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(arqs, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(print)))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(abrir)
-                            .addComponent(arqs, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(18, 18, 18)
-                        .addComponent(print)
+                        .addGap(73, 73, 73)
+                        .addComponent(volta)
+                        .addContainerGap())
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(volta)))
-                .addGap(33, 33, 33))
+                        .addComponent(jLabel3))))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void formComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_formComponentShown
+        jLabel3.setText("Conectado em: " + DB + " como: " + nome + " " + sobrenome);
+        codProd = new ArrayList<>();
         nomeProd = new ArrayList<>();
         estoqueProd = new ArrayList<>();
         try {
             conexao = Conecta.obterConexao(DB);
-            String sql = "SELECT * FROM produtos WHERE estoque IS NOT NULL;";
+            String sql = "SELECT * FROM produtos";
             PreparedStatement ps = conexao.prepareStatement(sql);
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
+                codProd.add(rs.getInt("cod"));
                 nomeProd.add(rs.getString("nome"));
                 estoqueProd.add(rs.getFloat("estoque"));
             }
-            ProdutoTableModel modeloTabela = new ProdutoTableModel(nomeProd, estoqueProd);
+            ProdutoTableModel modeloTabela = new ProdutoTableModel(nomeProd, estoqueProd, codProd);
             jTable1.setModel(modeloTabela);
         } catch (SQLException ex) {
             Logger.getLogger(Estoque.class.getName()).log(Level.SEVERE, null, ex);
@@ -218,9 +200,6 @@ public class Estoque extends javax.swing.JFrame {
                 arqs.addItem(file.getName());
             }
         }
-
-        jLabel1.setText("Conectado em: " + DB + " como: " + nome + " " + sobrenome);
-
     }//GEN-LAST:event_formComponentShown
 
     private void voltaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_voltaActionPerformed
@@ -295,7 +274,7 @@ public class Estoque extends javax.swing.JFrame {
         // TODO add your handling code here:
         String selectedFileName = (String) arqs.getSelectedItem();
         try {
-            File file = new File(System.getProperty("user.home")+ "\\" + selectedFileName);
+            File file = new File(System.getProperty("user.home") + "\\" + selectedFileName);
             Desktop desktop = Desktop.getDesktop();
             //desktop.open(file);
             if (file.exists()) {
@@ -308,6 +287,29 @@ public class Estoque extends javax.swing.JFrame {
         }
 
     }//GEN-LAST:event_abrirActionPerformed
+
+    private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseClicked
+        // TODO add your handling code here:
+        if (evt.getClickCount() == 2) {
+            int row = jTable1.getSelectedRow();
+            int cod = (Integer) jTable1.getValueAt(row,0);
+            String nome = (String) jTable1.getValueAt(row, 1);
+            //Float estoque = (Float) jTable1.getValueAt(row, 1);
+            
+            openEditStockScreen(cod,nome);
+        }
+    }//GEN-LAST:event_jTable1MouseClicked
+
+    private void openEditStockScreen(int cod, String nome) {
+        // Crie uma nova instância da tela de edição de estoque
+        if (admin == null) {           
+            EditEstoque telaEdicao = new EditEstoque(conexao, func, DB,nome, cod);
+            telaEdicao.show();
+        } else {
+            EditEstoque telaEdicao = new EditEstoque(conexao, admin, DB,nome, cod);           
+            telaEdicao.show();
+        }
+    }
 
     public static void main(String args[]) {
         String url = "jdbc:h2:~/" + DB;
@@ -325,9 +327,7 @@ public class Estoque extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton abrir;
     private javax.swing.JComboBox<String> arqs;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JPanel jPanel1;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTable1;
     private javax.swing.JButton print;

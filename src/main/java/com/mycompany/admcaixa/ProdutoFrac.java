@@ -12,21 +12,5 @@ public class ProdutoFrac extends Item{
     public float valorTotal(){
         return preco;
     }
-/*
-    public String getNome() {
-        return nome;
-    }
 
-    public int getCod() {
-        return cod;
-    }
-
-    public int getTipo() {
-        return tipo;
-    }
-
-    public int getQtd() {
-        return qtd;
-    }
-*/
 }

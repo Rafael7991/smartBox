@@ -1,7 +1,6 @@
 package com.mycompany.admcaixa;
 
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -27,17 +26,8 @@ public class NovoDB extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
-        jLabel2 = new javax.swing.JLabel();
-        disco = new javax.swing.JComboBox<>();
-        jLabel3 = new javax.swing.JLabel();
-        outroDisco = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        addComponentListener(new java.awt.event.ComponentAdapter() {
-            public void componentShown(java.awt.event.ComponentEvent evt) {
-                formComponentShown(evt);
-            }
-        });
 
         jLabel1.setText("Nome do Banco");
 
@@ -55,84 +45,48 @@ public class NovoDB extends javax.swing.JFrame {
             }
         });
 
-        jLabel2.setText("Disco onde H2 foi instalado: ");
-
-        disco.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "C:/", "D:/", "Outro" }));
-        disco.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                discoActionPerformed(evt);
-            }
-        });
-
-        jLabel3.setText("Informe somente a letra do Disco onde o H2 foi instalado:");
-
-        outroDisco.setEnabled(false);
-
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(40, 40, 40)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                .addGap(26, 26, 26)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(nome))
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                        .addComponent(jLabel2)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(disco, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jLabel3)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(outroDisco, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(nome, javax.swing.GroupLayout.PREFERRED_SIZE, 156, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jButton2)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGap(85, 85, 85)
                         .addComponent(jButton1)))
-                .addContainerGap(301, Short.MAX_VALUE))
+                .addContainerGap(30, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(30, 30, 30)
+                .addGap(26, 26, 26)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel2)
-                    .addComponent(disco, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel3)
-                    .addComponent(outroDisco, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                    .addComponent(jLabel1)
+                    .addComponent(nome, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(nome, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel1))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton1)
-                    .addComponent(jButton2))
-                .addContainerGap(101, Short.MAX_VALUE))
+                    .addComponent(jButton2)
+                    .addComponent(jButton1))
+                .addContainerGap(30, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-
-        dispose();
+         dispose();
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // CRIAR BANCO
         if (!nome.getText().isEmpty()) {
-            if (disco.getSelectedIndex() == 2) {
-                if (!outroDisco.getText().isEmpty() && outroDisco.getText().length() == 1) {
-                    nomeDiretorio = outroDisco.getText() + ":/" + "Users/" + System.getProperty("user.name");
-                } else {
-                    JOptionPane.showMessageDialog(null, "Informar disco onde H2 foi instalado, somente a letra");
-                }
-            } else {
-                nomeDiretorio = (String) disco.getSelectedItem() + "Users/" + System.getProperty("user.name");
-            }
+            nomeDiretorio = System.getProperty("user.home");
             nomeArquivo = nome.getText()+ ".mv.db";
             File diretorio = new File(nomeDiretorio);
             if (!diretorio.exists()) {
@@ -149,6 +103,7 @@ public class NovoDB extends javax.swing.JFrame {
                         + "    PRECO FLOAT,\n"
                         + "    TIPO INT NOT NULL,\n"
                         + "    ESTOQUE FLOAT,\n"
+                        + "    UNIDADE VARCHAR(8), \n"
                         + "    COD INT NOT NULL UNIQUE\n"
                         + ")";
 
@@ -161,7 +116,8 @@ public class NovoDB extends javax.swing.JFrame {
                         + "    SOBRENOME VARCHAR(255) NOT NULL,\n"
                         + "    LOGIN VARCHAR(255) NOT NULL,\n"
                         + "    SENHA VARCHAR(255) NOT NULL,\n"
-                        + "    PRIV INT NOT NULL\n"
+                        + "    PRIV INT NOT NULL,\n"
+                        + "    CONSTRAINT UK_login UNIQUE (LOGIN)\n "
                         + ")";
 
                 ps = conexao.prepareStatement(sql);
@@ -183,34 +139,17 @@ public class NovoDB extends javax.swing.JFrame {
                 sql = "INSERT INTO users (nome, sobrenome, login, senha, priv) VALUES ('admin', 'admin', 'admin', 'admin', 0)";
                 ps = conexao.prepareStatement(sql);
                 ps.executeUpdate();
-                
+                JOptionPane.showMessageDialog(null, "Banco criado com Sucesso!");
+                dispose();
             } catch (IOException e) {
                 System.out.println("Erro ao criar o arquivo: " + e.getMessage());
             } catch (SQLException ex) {
                 Logger.getLogger(NovoDB.class.getName()).log(Level.SEVERE, null, ex);
             }
+        } else {
+            JOptionPane.showMessageDialog(null, "Informe um nome para o Banco!");
         }
     }//GEN-LAST:event_jButton1ActionPerformed
-
-    private void discoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_discoActionPerformed
-        // TODO add your handling code here:
-        if (disco.getSelectedIndex() == 2) {
-            jLabel3.setVisible(true);
-            outroDisco.setVisible(true);
-            outroDisco.setEnabled(true);
-        } else {
-            jLabel3.setVisible(false);
-            outroDisco.setVisible(false);
-            outroDisco.setEnabled(false);
-        }
-    }//GEN-LAST:event_discoActionPerformed
-
-    private void formComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_formComponentShown
-        // TODO add your handling code here:
-        jLabel3.setVisible(false);
-        outroDisco.setVisible(false);
-        outroDisco.setEnabled(false);
-    }//GEN-LAST:event_formComponentShown
 
     public static void main(String args[]) {
 
@@ -224,13 +163,9 @@ public class NovoDB extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JComboBox<String> disco;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
     private javax.swing.JTextField nome;
-    private javax.swing.JTextField outroDisco;
     // End of variables declaration//GEN-END:variables
 }

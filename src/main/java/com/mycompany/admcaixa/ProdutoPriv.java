@@ -1,41 +1,25 @@
-
 package com.mycompany.admcaixa;
 
-public class ProdutoPriv extends Item{
-    
-    ProdutoPriv(int cod, String nome){
+public class ProdutoPriv extends Item {
+
+    private int estoque;
+
+    ProdutoPriv(int cod, String nome) {
         this.cod = cod;
         this.nome = nome;
         tipo = 2;
     }
     
     @Override
-    public float valorTotal(){
-        return preco*estoque;
-    }
-/*
-    public String getNome() {
-        return nome;
-    }
-
-    public int getCod() {
-        return cod;
-    }
-
-    public int getTipo() {
-        return tipo;
-    }
-
-    public int getQtd() {
-        return qtd;
-    }
-
-    public float getPreco() {
+    public float valorTotal() {
         return preco;
     }
 
     public int getEstoque() {
         return estoque;
     }
-*/
+
+    public void setEstoque(int estoque) {
+        this.estoque = estoque;
+    }
 }

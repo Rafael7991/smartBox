@@ -10,6 +10,8 @@ public class CadastraProd extends javax.swing.JFrame {
     private static String DB;
     private Func func;
     private Admin admin;
+    private String nome;
+    private String sobrenome;
     private int priv;
 
     public CadastraProd(Connection conexao, Func func, String DB) {
@@ -17,6 +19,8 @@ public class CadastraProd extends javax.swing.JFrame {
         CadastraProd.DB = DB;
         this.conexao = conexao;
         this.priv = func.getPriv();
+        this.nome = func.getNome();
+        this.sobrenome = func.getSobrenome();
         this.func = func;
     }
 
@@ -25,10 +29,14 @@ public class CadastraProd extends javax.swing.JFrame {
         CadastraProd.DB = DB;
         this.conexao = conexao;
         this.admin = admin;
+        this.nome = admin.getNome();
+        this.sobrenome = admin.getSobrenome();
         this.priv = admin.getPriv();
     }
 
     public CadastraProd() {
+        this.nome = "convidado";
+        this.sobrenome = "";
         initComponents();
     }
 
@@ -51,6 +59,7 @@ public class CadastraProd extends javax.swing.JFrame {
         fieldCod = new javax.swing.JTextField();
         jLabel5 = new javax.swing.JLabel();
         volta = new javax.swing.JButton();
+        jLabel6 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         addComponentListener(new java.awt.event.ComponentAdapter() {
@@ -104,39 +113,48 @@ public class CadastraProd extends javax.swing.JFrame {
             }
         });
 
+        jLabel6.setBackground(new java.awt.Color(51, 51, 255));
+        jLabel6.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        jLabel6.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel6.setText("jLabel6");
+        jLabel6.setOpaque(true);
+
         javax.swing.GroupLayout bgCadastProdLayout = new javax.swing.GroupLayout(bgCadastProd);
         bgCadastProd.setLayout(bgCadastProdLayout);
         bgCadastProdLayout.setHorizontalGroup(
             bgCadastProdLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(bgCadastProdLayout.createSequentialGroup()
-                .addGap(100, 100, 100)
-                .addGroup(bgCadastProdLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jLabel1)
-                    .addComponent(precoLabel)
-                    .addComponent(jLabel4))
-                .addGap(29, 29, 29)
-                .addGroup(bgCadastProdLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(cadastBotao, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(bgCadastProdLayout.createSequentialGroup()
-                        .addGroup(bgCadastProdLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(fieldNome)
-                            .addComponent(fieldPreco)
-                            .addComponent(fieldStock, javax.swing.GroupLayout.DEFAULT_SIZE, 292, Short.MAX_VALUE))
-                        .addGap(18, 18, 18)
-                        .addGroup(bgCadastProdLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jLabel2)
-                            .addComponent(jLabel3)
-                            .addComponent(jLabel5))
-                        .addGap(18, 18, 18)
-                        .addGroup(bgCadastProdLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(tipoBox, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(unidBox, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(fieldCod))))
-                .addContainerGap(138, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, bgCadastProdLayout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(volta)
                 .addGap(338, 338, 338))
+            .addGroup(bgCadastProdLayout.createSequentialGroup()
+                .addGap(100, 100, 100)
+                .addGroup(bgCadastProdLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel6)
+                    .addGroup(bgCadastProdLayout.createSequentialGroup()
+                        .addGroup(bgCadastProdLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jLabel1)
+                            .addComponent(precoLabel)
+                            .addComponent(jLabel4))
+                        .addGap(29, 29, 29)
+                        .addGroup(bgCadastProdLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(cadastBotao, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addGroup(bgCadastProdLayout.createSequentialGroup()
+                                .addGroup(bgCadastProdLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(fieldNome)
+                                    .addComponent(fieldPreco)
+                                    .addComponent(fieldStock, javax.swing.GroupLayout.DEFAULT_SIZE, 292, Short.MAX_VALUE))
+                                .addGap(18, 18, 18)
+                                .addGroup(bgCadastProdLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(jLabel2)
+                                    .addComponent(jLabel3)
+                                    .addComponent(jLabel5))
+                                .addGap(18, 18, 18)
+                                .addGroup(bgCadastProdLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(tipoBox, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(unidBox, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(fieldCod))))))
+                .addContainerGap(177, Short.MAX_VALUE))
         );
         bgCadastProdLayout.setVerticalGroup(
             bgCadastProdLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -163,7 +181,8 @@ public class CadastraProd extends javax.swing.JFrame {
                 .addComponent(cadastBotao)
                 .addGap(18, 18, 18)
                 .addComponent(volta)
-                .addContainerGap(154, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 177, Short.MAX_VALUE)
+                .addComponent(jLabel6))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -171,15 +190,13 @@ public class CadastraProd extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(39, Short.MAX_VALUE)
-                .addComponent(bgCadastProd, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(bgCadastProd, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(38, Short.MAX_VALUE)
-                .addComponent(bgCadastProd, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(bgCadastProd, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -208,6 +225,7 @@ public class CadastraProd extends javax.swing.JFrame {
 
     private void formComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_formComponentShown
         // TODO add your handling code here:
+        jLabel6.setText("Conectado em: " + DB + " como: " + nome + " " + sobrenome);
         if (tipoBox.getSelectedIndex() == 0) {
             fieldPreco.setEnabled(false);
             fieldStock.setEnabled(false);
@@ -264,6 +282,7 @@ public class CadastraProd extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel precoLabel;
     protected static javax.swing.JComboBox<String> tipoBox;
     protected static javax.swing.JComboBox<String> unidBox;

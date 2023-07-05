@@ -7,8 +7,8 @@
     <packaging>jar</packaging>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <maven.compiler.source>18</maven.compiler.source>
-        <maven.compiler.target>18</maven.compiler.target>
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <maven.compiler.target>1.8</maven.compiler.target>
         <exec.mainClass>com.mycompany.admcaixa.Login</exec.mainClass>
     </properties>
     <dependencies>
@@ -16,12 +16,24 @@
             <groupId>com.h2database</groupId>
             <artifactId>h2</artifactId>
             <version>2.1.214</version> 
+            <scope>runtime</scope>
         </dependency>
         <dependency>
             <groupId>com.itextpdf</groupId>
             <artifactId>itext7-core</artifactId>
             <version>5.5.9</version>
+            <scope>system</scope>
+            <systemPath>C:\Users\lopes\Documents\NetBeansProjects\AdmCaixa\lib\itext.jar</systemPath>
+            <type>jar</type>
         </dependency>
     </dependencies>
+    <repositories>
+        <repository>
+            <id>local-maven-repo</id>
+            <url>file://${user.home}/.m2/repository</url>
+        </repository>
+    </repositories>
     
 </project>
+
+

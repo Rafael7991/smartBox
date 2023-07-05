@@ -2,6 +2,8 @@ package com.mycompany.admcaixa;
 
 //import java.sql.*;
 import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
 import javax.swing.JOptionPane;
 
 public class CadastraUser extends javax.swing.JFrame {
@@ -10,12 +12,16 @@ public class CadastraUser extends javax.swing.JFrame {
     private int priv;
     private Func func;
     private Admin admin;
+    private String nome;
+    private String sobrenome;
     private static String DB;
 
     public CadastraUser(Connection conexao, Func func, String DB) {
         initComponents();
         this.priv = func.getPriv();
         this.func = func;
+        this.nome = func.getNome();
+        this.sobrenome = func.getSobrenome();
         CadastraUser.DB = DB;
         privBox.setEnabled(false);
         privBox.setVisible(false);
@@ -27,6 +33,8 @@ public class CadastraUser extends javax.swing.JFrame {
         initComponents();
         this.admin = admin;
         this.priv = admin.getPriv();
+        this.nome = admin.getNome();
+        this.sobrenome = admin.getSobrenome();
         CadastraUser.DB = DB;
     }
 
@@ -100,8 +108,11 @@ public class CadastraUser extends javax.swing.JFrame {
             }
         });
 
+        jLabel1.setBackground(new java.awt.Color(51, 51, 255));
+        jLabel1.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(255, 255, 255));
         jLabel1.setText("jLabel1");
+        jLabel1.setOpaque(true);
 
         volta.setText("VOLTAR");
         volta.addActionListener(new java.awt.event.ActionListener() {
@@ -179,7 +190,7 @@ public class CadastraUser extends javax.swing.JFrame {
                     .addComponent(cadastraBotao)
                     .addComponent(jButton1)
                     .addComponent(volta))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 257, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 258, Short.MAX_VALUE)
                 .addComponent(jLabel1)
                 .addContainerGap())
         );
@@ -218,47 +229,32 @@ public class CadastraUser extends javax.swing.JFrame {
 
     private void formComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_formComponentShown
         // TODO add your handling code here:
-        jLabel1.setText("conectado em: " + DB);
+        jLabel1.setText("conectado em: " + DB + " como: " + nome + " " + sobrenome);
     }//GEN-LAST:event_formComponentShown
 
     private void voltaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_voltaActionPerformed
         // VOLTAR
-        if (admin == null) {
+        /*if (admin == null) {
             Home home = new Home(func, conexao, DB);
             home.show();
         } else {
             Home home = new Home(admin, conexao, DB);
             home.show();
-        }
+        }*/
         dispose();
     }//GEN-LAST:event_voltaActionPerformed
 
     public static void main(String args[]) {
-
-        /*try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
+        String url = "jdbc:h2:~/" + DB;
+        try (Connection conexao = DriverManager.getConnection(url, "sa", "")) {
+            java.awt.EventQueue.invokeLater(new Runnable() {
+                public void run() {
+                    new Caixa(conexao).setVisible(true);
                 }
-            }
-
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(CadastraUser.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(CadastraUser.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(CadastraUser.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(CadastraUser.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }*/
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                new CadastraUser().setVisible(true);
-
-            }
-        });
+            });
+        } catch (SQLException e) {
+            System.out.println("Falha na conexão: " + e.getMessage());
+        }
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
